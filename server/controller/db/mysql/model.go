@@ -20,10 +20,12 @@ import (
 	"bytes"
 	"compress/zlib"
 	"database/sql/driver"
+	"encoding/base64"
 	"errors"
 	"fmt"
 	"io"
 	"time"
+	"unsafe"
 
 	"gorm.io/gorm"
 )
@@ -66,10 +68,64 @@ type ResourceEvent struct {
 }
 
 type DomainAdditionalResource struct {
-	ID        int       `gorm:"primaryKey;autoIncrement;unique;column:id;type:int;not null" json:"ID"`
-	Domain    string    `gorm:"column:domain;type:char(64);default:''" json:"DOMAIN"`
-	Content   string    `gorm:"column:content;type:longtext" json:"CONTENT"`
-	CreatedAt time.Time `gorm:"autoCreateTime;column:created_at;type:datetime" json:"CREATED_AT"`
+	ID        int               `gorm:"primaryKey;autoIncrement;unique;column:id;type:int;not null" json:"ID"`
+	Domain    string            `gorm:"column:domain;type:char(64);default:''" json:"DOMAIN"`
+	Content   CompressedContent `gorm:"column:content;type:longtext" json:"CONTENT"`
+	CreatedAt time.Time         `gorm:"autoCreateTime;column:created_at;type:datetime" json:"CREATED_AT"`
+}
+
+type CompressedContent string
+
+// Scan scan decompress value into compressedContent, implements sql.Scanner interface
+func (c *CompressedContent) Scan(value interface{}) error {
+	// decompress
+	t1 := time.Now()
+	base64EncodedData, ok := value.([]byte)
+	if !ok {
+		return errors.New(fmt.Sprint("failed to decompress CompressedContent value:", value))
+	}
+	compressedData, err := base64.StdEncoding.DecodeString(string(base64EncodedData))
+	if err != nil {
+		log.Error(err)
+		*c = CompressedContent(base64EncodedData)
+		return nil
+	}
+
+	var b bytes.Buffer
+	b.Write(compressedData)
+	r, err := zlib.NewReader(&b)
+	if err != nil {
+		return err
+	}
+	defer r.Close()
+
+	originData, err := io.ReadAll(r)
+	if err != nil {
+		return err
+	}
+	*c = CompressedContent(originData)
+	log.Infof("decompress time consumed: %d", time.Since(t1))
+	return nil
+}
+
+// Value return compress value, implement driver.Valuer interface
+func (c CompressedContent) Value() (driver.Value, error) {
+	// compress
+	t1 := time.Now()
+	log.Infof("before compress data size: %.2f MB", float64(unsafe.Sizeof(c))/(1024*1024))
+	var b bytes.Buffer
+	w := zlib.NewWriter(&b)
+	_, err := w.Write([]byte(c))
+	if err != nil {
+		log.Errorf("failed to write compressed data: %v", err)
+	}
+	if err = w.Close(); err != nil {
+		log.Errorf("failed to close zlib writer: %v", err)
+	}
+
+	result := base64.StdEncoding.EncodeToString(b.Bytes())
+	log.Infof("after compress data size: %.2f MB, time consumed: %v", float64(unsafe.Sizeof(result))/(1024*1024), time.Since(t1))
+	return result, nil
 }
 
 type Process struct {
@@ -1293,19 +1349,19 @@ type VTapRepo struct {
 	Branch    string          `gorm:"column:branch;type:varchar(256);default:''" json:"BRANCH"`
 	RevCount  string          `gorm:"column:rev_count;type:varchar(256);default:''" json:"REV_COUNT"`
 	CommitID  string          `gorm:"column:commit_id;type:varchar(256);default:''" json:"COMMIT_ID"`
-	Image     compressedImage `gorm:"column:image;type:logblob;not null" json:"IMAGE"`
+	Image     compressedBytes `gorm:"column:image;type:logblob;not null" json:"IMAGE"`
 	CreatedAt time.Time       `gorm:"column:created_at;type:timestamp;not null;default:CURRENT_TIMESTAMP" json:"CREATED_AT"`
 	UpdatedAt time.Time       `gorm:"column:updated_at;type:timestamp;not null;default:CURRENT_TIMESTAMP" json:"UPDATED_AT"`
 }
 
-type compressedImage []byte
+type compressedBytes []byte
 
-// Scan scan decompress value into compressedImage, implements sql.Scanner interface
-func (c *compressedImage) Scan(value interface{}) error {
+// Scan scan decompress value into compressedBytes, implements sql.Scanner interface
+func (c *compressedBytes) Scan(value interface{}) error {
 	// decompress
 	compressedData, ok := value.([]byte)
 	if !ok {
-		return errors.New(fmt.Sprint("Failed to decompress compressedImage value:", value))
+		return errors.New(fmt.Sprint("failed to decompress compressedImage value:", value))
 	}
 
 	var b bytes.Buffer
@@ -1325,12 +1381,20 @@ func (c *compressedImage) Scan(value interface{}) error {
 }
 
 // Value return compress value, implement driver.Valuer interface
-func (c compressedImage) Value() (driver.Value, error) {
+func (c compressedBytes) Value() (driver.Value, error) {
 	// compress
+	log.Infof("compressed data size: %.2f MB", float64(len(c))/(1024*1024))
 	var b bytes.Buffer
 	w := zlib.NewWriter(&b)
-	w.Write(c)
-	w.Close()
+	_, err := w.Write(c)
+	if err != nil {
+		log.Errorf("failed to write compressed data: %v", err)
+	}
+	if err = w.Close(); err != nil {
+		log.Errorf("failed to close zlib writer: %v", err)
+	}
+
+	log.Infof("compressed data size: %.2f MB", float64(len(b.Bytes()))/(1024*1024))
 	return b.String(), nil
 }
 
@@ -1342,7 +1406,7 @@ type Plugin struct {
 	ID        int             `gorm:"primaryKey;column:id;type:int;not null" json:"ID"`
 	Name      string          `gorm:"column:name;type:varchar(256);not null" json:"NAME"`
 	Type      int             `gorm:"column:type;type:int" json:"TYPE"` // 1: wasm
-	Image     compressedImage `gorm:"column:image;type:logblob;not null" json:"IMAGE"`
+	Image     compressedBytes `gorm:"column:image;type:logblob;not null" json:"IMAGE"`
 	CreatedAt time.Time       `gorm:"column:created_at;type:timestamp;not null;default:CURRENT_TIMESTAMP" json:"CREATED_AT"`
 	UpdatedAt time.Time       `gorm:"column:updated_at;type:timestamp;not null;default:CURRENT_TIMESTAMP" json:"UPDATED_AT"`
 }
