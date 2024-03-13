@@ -284,3 +284,64 @@ func GetTraceIdIndex(traceId string, indexTypeIsIncremetalId, formatIsHex bool, 
 	// the lowest 16 bits are set as the hash value of traceId to reduce duplication when filtering data
 	return num<<16 | (hash & 0xffff), nil
 }
+
+func GetValueByOffsetAndKind(ptr, offset uintptr, kind reflect.Kind, fieldName string) interface{} {
+	fieldAddr := unsafe.Pointer(ptr + offset)
+
+	switch kind {
+	case reflect.String:
+		return *(*string)(fieldAddr)
+	case reflect.Bool:
+		return *(*bool)(fieldAddr)
+	case reflect.Int:
+		return *(*int)(fieldAddr)
+	case reflect.Int8:
+		return *(*int8)(fieldAddr)
+	case reflect.Int16:
+		return *(*int16)(fieldAddr)
+	case reflect.Int32:
+		return *(*int32)(fieldAddr)
+	case reflect.Int64:
+		return *(*int64)(fieldAddr)
+	case reflect.Uint:
+		return *(*uint)(fieldAddr)
+	case reflect.Uint8:
+		return *(*uint8)(fieldAddr)
+	case reflect.Uint16:
+		return *(*uint16)(fieldAddr)
+	case reflect.Uint32:
+		return *(*uint32)(fieldAddr)
+	case reflect.Uint64:
+		return *(*uint64)(fieldAddr)
+	// case reflect.Uintptr
+	case reflect.Float32:
+		return *(*float32)(fieldAddr)
+	case reflect.Float64:
+		return *(*float64)(fieldAddr)
+	// case reflect.Array
+	// case reflect.Chan
+	// case reflect.Func
+	case reflect.Slice:
+		if strings.Contains(fieldName, "IP6") {
+			return *(*net.IP)(fieldAddr)
+		} else if strings.Contains(fieldName, "AttributeNames") || strings.Contains(fieldName, "AttributeValues") || strings.Contains(fieldName, "MetricsNames") {
+			return *(*[]string)(fieldAddr)
+		} else if strings.Contains(fieldName, "MetricsValues") {
+			return *(*[]float64)(fieldAddr)
+		}
+		return nil
+	default:
+		return nil
+	}
+}
+
+func IsNil(i interface{}) bool {
+	if i == nil {
+		return true
+	}
+	vi := reflect.ValueOf(i)
+	if vi.Kind() == reflect.Ptr {
+		return vi.IsNil()
+	}
+	return false
+}

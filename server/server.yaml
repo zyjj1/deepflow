@@ -663,3 +663,22 @@ ingester:
   #  queue-count: 2
   #  queue-size:  1000000
   #  metrics-filter: [app] # only support: 'app', means flow_metrics.'vtap_app_edgp_port.1s'/'vtap_app_port.1s'
+  exporters:
+  - protocol: kafka
+    endpoints: [127.0.0.1:4317, 1.1.1.1:4317]  # [protocol://]ip:port,随机选择一个可以发送成功的地址
+    data-sources: # $db_name.$table_name
+    - flow_log.l7_flow_log
+    - flow_log.network.1m
+    - flow_log.application_map.1m
+    extra-headers: [key1:value1, key2:value2]  # type: map[string]string, extra http request headers
+    queue-count: 4
+    queue-size: 100000
+    batch-size: 1024       # 不同协议的 batch-size 不同
+    flush-timeout: 10
+    tag-filters:
+    - field-name: signal_source
+      operator: "!="        # 支持的操作符见 PS 正文
+      field-values: [10]     # 仅当操作符是 IN 或 NOT IN 时，才支持填写长度大于 1 的列表
+    export-fields: # $field_name 等
+    - "@tag"
+    - "@metrics"

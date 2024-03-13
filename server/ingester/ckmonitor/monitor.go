@@ -144,7 +144,7 @@ func (m *Monitor) isDiskNeedClean(diskInfo *DiskInfo) bool {
 
 	usage := (diskInfo.usedSpace*100 + diskInfo.totalSpace - 1) / diskInfo.totalSpace
 	if usage > uint64(cleanCfg.UsedPercent) && diskInfo.freeSpace < uint64(cleanCfg.FreeSpace)<<30 {
-		log.Infof("disk usage is over %d%. disk name: %s, path: %s, total space: %d, free space: %d, usage: %d",
+		log.Infof("disk usage is over %d. disk name: %s, path: %s, total space: %d, free space: %d, usage: %d",
 			cleanCfg.UsedPercent, diskInfo.name, diskInfo.path, diskInfo.totalSpace, diskInfo.freeSpace, usage)
 		return true
 	} else if cleanCfg.UsedSpace > 0 && diskInfo.usedSpace >= uint64(cleanCfg.UsedSpace)<<30 {

@@ -95,7 +95,7 @@ func (w *CkDbWriter) Put(items ...interface{}) error {
 		caches[i] = make([]interface{}, 0, CACHE_SIZE)
 	}
 	for _, item := range items {
-		doc, ok := item.(*app.Document)
+		doc, ok := item.(app.Document)
 		if !ok {
 			log.Warningf("receive wrong type data %v", item)
 			continue
@@ -190,7 +190,7 @@ func (pw *PromWriter) Put(items ...interface{}) error {
 	atomic.AddInt32(&pw.seq, 1)
 	var timeSeries []interface{}
 	for _, item := range items {
-		doc, ok := item.(*app.Document)
+		doc, ok := item.(app.Document)
 		if !ok {
 			log.Warningf("receive wrong type data %v", item)
 			continue
@@ -208,16 +208,14 @@ func (pw *PromWriter) Put(items ...interface{}) error {
 			doc.Release()
 			continue
 		}
-		t := int64(doc.Timestamp) * 1000 // 转换为 ms
+		t := int64(doc.Time()) * 1000 // 转换为 ms
 
 		var metrics map[string]float64
 		// TODO: 其余 metrics 类型待实现
-		if doc.Meter != nil {
-			switch meter := doc.Meter.(type) {
-			case *flow_metrics.AppMeter:
-				if _, ok := pw.filter[metricsFilterApp]; ok {
-					metrics = flow_metrics.EncodeAppMeterToMetrics(meter)
-				}
+		switch meter := doc.Meter().(type) {
+		case *flow_metrics.AppMeter:
+			if _, ok := pw.filter[metricsFilterApp]; ok {
+				metrics = flow_metrics.EncodeAppMeterToMetrics(meter)
 			}
 		}
 
@@ -227,17 +225,7 @@ func (pw *PromWriter) Put(items ...interface{}) error {
 			continue
 		}
 
-		var labels []prompb.Label
-		if doc.Tagger != nil {
-			switch tag := doc.Tagger.(type) {
-			case *flow_metrics.MiniTag:
-				labels = flow_metrics.EncodeMiniTagToPromLabels(tag)
-			case *flow_metrics.CustomTag:
-				labels = flow_metrics.EncodeCustomTagToPromLabels(tag)
-			case *flow_metrics.Tag:
-				labels = flow_metrics.EncodeTagToPromLabels(tag)
-			}
-		}
+		labels := flow_metrics.EncodeTagToPromLabels(doc.Tags())
 
 		pw.counter.RecvMetricsCount++
 		for metric, value := range metrics {

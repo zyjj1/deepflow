@@ -56,6 +56,7 @@ type ExportersConfig struct {
 }
 
 func ExportersEnabled(configPath string) bool {
+	return true
 	configBytes, err := ioutil.ReadFile(configPath)
 	if err != nil {
 		log.Error("Read config file error:", err)

@@ -24,6 +24,7 @@ import (
 	logging "github.com/op/go-logging"
 
 	"github.com/deepflowio/deepflow/server/ingester/droplet/queue"
+	"github.com/deepflowio/deepflow/server/ingester/exporters"
 	"github.com/deepflowio/deepflow/server/ingester/flow_metrics/config"
 	"github.com/deepflowio/deepflow/server/ingester/flow_metrics/dbwriter"
 	"github.com/deepflowio/deepflow/server/ingester/flow_metrics/unmarshaller"
@@ -41,9 +42,10 @@ type FlowMetrics struct {
 	unmarshallers []*unmarshaller.Unmarshaller
 	platformDatas []*grpc.PlatformInfoTable
 	dbwriters     []dbwriter.DbWriter
+	exporters     *exporters.Exporters
 }
 
-func NewFlowMetrics(cfg *config.Config, recv *receiver.Receiver, platformDataManager *grpc.PlatformDataManager) (*FlowMetrics, error) {
+func NewFlowMetrics(cfg *config.Config, recv *receiver.Receiver, platformDataManager *grpc.PlatformDataManager, exporters *exporters.Exporters) (*FlowMetrics, error) {
 	flowMetrics := FlowMetrics{}
 
 	manager := queue.NewManager(ingesterctl.INGESTERCTL_FLOW_METRICS_QUEUE)
@@ -72,6 +74,7 @@ func NewFlowMetrics(cfg *config.Config, recv *receiver.Receiver, platformDataMan
 	}
 
 	flowMetrics.dbwriters = writers
+	flowMetrics.exporters = exporters
 	flowMetrics.unmarshallers = make([]*unmarshaller.Unmarshaller, unmarshallQueueCount)
 	flowMetrics.platformDatas = make([]*grpc.PlatformInfoTable, unmarshallQueueCount)
 	for i := 0; i < unmarshallQueueCount; i++ {
@@ -85,7 +88,7 @@ func NewFlowMetrics(cfg *config.Config, recv *receiver.Receiver, platformDataMan
 		if err != nil {
 			return nil, err
 		}
-		flowMetrics.unmarshallers[i] = unmarshaller.NewUnmarshaller(i, flowMetrics.platformDatas[i], cfg.DisableSecondWrite, libqueue.QueueReader(unmarshallQueues.FixedMultiQueue[i]), flowMetrics.dbwriters)
+		flowMetrics.unmarshallers[i] = unmarshaller.NewUnmarshaller(i, flowMetrics.platformDatas[i], cfg.DisableSecondWrite, libqueue.QueueReader(unmarshallQueues.FixedMultiQueue[i]), flowMetrics.dbwriters, exporters)
 	}
 
 	return &flowMetrics, nil

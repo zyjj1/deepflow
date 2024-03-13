@@ -41,7 +41,7 @@ type Meter interface {
 	ToKVString() string
 	MarshalTo([]byte) int
 	SortKey() uint64
-	Clone() Meter
+	//	Clone() Meter
 	Release()
 	Reverse()
 	ToReversed() Meter
