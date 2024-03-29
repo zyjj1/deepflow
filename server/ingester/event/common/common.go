@@ -28,9 +28,25 @@ const (
 	RESOURCE_EVENT EventType = iota
 	PERF_EVENT
 	ALARM_EVENT
+	K8S_EVENT
 )
 
 func (e EventType) String() string {
+	switch e {
+	case RESOURCE_EVENT:
+		return "resource_event"
+	case PERF_EVENT:
+		return "perf_event"
+	case ALARM_EVENT:
+		return "alarm_event"
+	case K8S_EVENT:
+		return "k8s_event"
+	default:
+		return "unknown_event"
+	}
+}
+
+func (e EventType) TableName() string {
 	switch e {
 	case RESOURCE_EVENT:
 		return "event"
@@ -38,11 +54,9 @@ func (e EventType) String() string {
 		return "perf_event"
 	case ALARM_EVENT:
 		return "alarm_event"
+	case K8S_EVENT:
+		return "event"
 	default:
 		return "unknown_event"
 	}
-}
-
-func (e EventType) TableName() string {
-	return e.String()
 }
