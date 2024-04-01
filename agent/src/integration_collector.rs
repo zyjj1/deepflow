@@ -241,6 +241,22 @@ async fn aggregate_with_catch_exception(
     })
 }
 
+// for log capture from vector
+#[derive(Debug, PartialEq)]
+pub struct LogStream(Vec<u8>);
+
+impl Sendable for LogStream {
+    fn encode(mut self, buf: &mut Vec<u8>) -> Result<usize, prost::EncodeError> {
+        let length = self.0.len();
+        buf.append(&mut self.0);
+        Ok(length)
+    }
+
+    fn message_type(&self) -> SendMessageType {
+        SendMessageType::LogStream
+    }
+}
+
 fn decode_otel_trace_data(
     peer_addr: SocketAddr,
     data: Vec<u8>,
@@ -595,6 +611,7 @@ async fn handler(
     prometheus_sender: DebugSender<BoxedPrometheusExtra>,
     telegraf_sender: DebugSender<TelegrafMetric>,
     profile_sender: DebugSender<Profile>,
+    log_stream_sender: DebugSender<LogStream>,
     exception_handler: ExceptionHandler,
     compressed: bool,
     counter: Arc<CompressedMetric>,
@@ -607,6 +624,7 @@ async fn handler(
     external_profile_integration_disabled: bool,
     external_trace_integration_disabled: bool,
     external_metric_integration_disabled: bool,
+    external_log_integration_disabled: bool,
 ) -> Result<Response<Body>, GenericError> {
     match (req.method(), req.uri().path()) {
         (&Method::GET, "/") => {
@@ -784,6 +802,25 @@ async fn handler(
 
             Ok(Response::builder().body(Body::empty()).unwrap())
         }
+        // log integration
+        (&Method::POST, "/api/v1/log") => {
+            if external_log_integration_disabled {
+                return Ok(Response::builder().body(Body::empty()).unwrap());
+            }
+            let (part, body) = req.into_parts();
+            let whole_body = match aggregate_with_catch_exception(body, &exception_handler).await {
+                Ok(b) => b,
+                Err(e) => {
+                    return Ok(e);
+                }
+            };
+            let log_data = decode_metric(whole_body, &part.headers)?;
+            if let Err(Error::Terminated(..)) = log_stream_sender.send(LogStream(log_data)) {
+                warn!("log sender queue has terminated");
+            }
+
+            Ok(Response::builder().body(Body::empty()).unwrap())
+        }
         // Return the 404 Not Found for other routes.
         _ => Ok(Response::builder()
             .status(StatusCode::NOT_FOUND)
@@ -883,6 +920,7 @@ pub struct MetricServer {
     prometheus_sender: DebugSender<BoxedPrometheusExtra>,
     telegraf_sender: DebugSender<TelegrafMetric>,
     profile_sender: DebugSender<Profile>,
+    log_stream_sender: DebugSender<LogStream>,
     port: Arc<AtomicU16>,
     exception_handler: ExceptionHandler,
     server_shutdown_tx: Mutex<Option<mpsc::Sender<()>>>,
@@ -896,6 +934,7 @@ pub struct MetricServer {
     external_profile_integration_disabled: bool,
     external_trace_integration_disabled: bool,
     external_metric_integration_disabled: bool,
+    external_log_integration_disabled: bool,
 }
 
 impl MetricServer {
@@ -907,6 +946,7 @@ impl MetricServer {
         prometheus_sender: DebugSender<BoxedPrometheusExtra>,
         telegraf_sender: DebugSender<TelegrafMetric>,
         profile_sender: DebugSender<Profile>,
+        log_stream_sender: DebugSender<LogStream>,
         port: u16,
         exception_handler: ExceptionHandler,
         compressed: bool,
@@ -918,6 +958,7 @@ impl MetricServer {
         external_profile_integration_disabled: bool,
         external_trace_integration_disabled: bool,
         external_metric_integration_disabled: bool,
+        external_log_integration_disabled: bool,
     ) -> (Self, IntegrationCounter) {
         let counter = IntegrationCounter::default();
         (
@@ -931,6 +972,7 @@ impl MetricServer {
                 prometheus_sender,
                 telegraf_sender,
                 profile_sender,
+                log_stream_sender,
                 port: Arc::new(AtomicU16::new(port)),
                 exception_handler,
                 server_shutdown_tx: Default::default(),
@@ -944,6 +986,7 @@ impl MetricServer {
                 external_profile_integration_disabled,
                 external_trace_integration_disabled,
                 external_metric_integration_disabled,
+                external_log_integration_disabled,
             },
             counter,
         )
@@ -974,6 +1017,7 @@ impl MetricServer {
         let prometheus_sender = self.prometheus_sender.clone();
         let telegraf_sender = self.telegraf_sender.clone();
         let profile_sender = self.profile_sender.clone();
+        let log_stream_sender = self.log_stream_sender.clone();
         let port = self.port.clone();
         let monitor_port = Arc::new(AtomicU16::new(port.load(Ordering::Acquire)));
         let (mon_tx, mon_rx) = oneshot::channel();
@@ -989,6 +1033,7 @@ impl MetricServer {
         let external_profile_integration_disabled = self.external_profile_integration_disabled;
         let external_trace_integration_disabled = self.external_trace_integration_disabled;
         let external_metric_integration_disabled = self.external_metric_integration_disabled;
+        let external_log_integration_disabled = self.external_log_integration_disabled;
         let (tx, mut rx) = mpsc::channel(8);
         self.runtime
             .spawn(Self::alive_check(monitor_port.clone(), tx.clone(), mon_rx));
@@ -1043,6 +1088,7 @@ impl MetricServer {
                     let prometheus_sender = prometheus_sender.clone();
                     let telegraf_sender = telegraf_sender.clone();
                     let profile_sender = profile_sender.clone();
+                    let log_stream_sender = log_stream_sender.clone();
                     let exception_handler_inner = exception_handler.clone();
                     let counter = counter.clone();
                     let compressed = compressed.clone();
@@ -1058,6 +1104,7 @@ impl MetricServer {
                         let prometheus_sender = prometheus_sender.clone();
                         let telegraf_sender = telegraf_sender.clone();
                         let profile_sender = profile_sender.clone();
+                        let log_stream_sender = log_stream_sender.clone();
                         let exception_handler = exception_handler_inner.clone();
                         let peer_addr = conn.remote_addr();
                         let counter = counter.clone();
@@ -1079,6 +1126,7 @@ impl MetricServer {
                                     prometheus_sender.clone(),
                                     telegraf_sender.clone(),
                                     profile_sender.clone(),
+                                    log_stream_sender.clone(),
                                     exception_handler.clone(),
                                     compressed.load(Ordering::Relaxed),
                                     counter.clone(),
@@ -1091,6 +1139,7 @@ impl MetricServer {
                                     external_profile_integration_disabled,
                                     external_trace_integration_disabled,
                                     external_metric_integration_disabled,
+                                    external_log_integration_disabled,
                                 )
                             }))
                         }
