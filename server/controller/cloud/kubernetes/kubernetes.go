@@ -35,12 +35,13 @@ type Kubernetes struct {
 	clusterID             string
 	regionUuid            string
 	vpcUuid               string
+	orgID                 int
 	podNetIPv4CIDRMaxMask int
 	podNetIPv6CIDRMaxMask int
 	portNameRegex         string
 }
 
-func NewKubernetes(domain mysql.Domain) (*Kubernetes, error) {
+func NewKubernetes(orgID int, domain mysql.Domain) (*Kubernetes, error) {
 	configJson, err := simplejson.NewJson([]byte(domain.Config))
 	if err != nil {
 		log.Error(err)
@@ -73,6 +74,7 @@ func NewKubernetes(domain mysql.Domain) (*Kubernetes, error) {
 		name:                  domain.Name,
 		uuidGenerate:          domain.DisplayName,
 		clusterID:             domain.ClusterID,
+		orgID:                 orgID,
 		regionUuid:            configJson.Get("region_uuid").MustString(),
 		vpcUuid:               configJson.Get("vpc_uuid").MustString(),
 		podNetIPv4CIDRMaxMask: podNetIPv4CIDRMaxMask,

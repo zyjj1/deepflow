@@ -17,10 +17,11 @@
 package aliyun
 
 import (
-	"github.com/deepflowio/deepflow/server/controller/cloud/model"
-	"github.com/deepflowio/deepflow/server/controller/common"
 	"strconv"
 	"strings"
+
+	"github.com/deepflowio/deepflow/server/controller/cloud/model"
+	"github.com/deepflowio/deepflow/server/controller/common"
 
 	vpc "github.com/aliyun/alibaba-cloud-sdk-go/services/vpc"
 )
@@ -67,8 +68,8 @@ func (a *Aliyun) getNatGateways(region model.Region) (
 				}
 			}
 
-			natGatewayLcuuid := common.GenerateUUID(natGatewayId)
-			vpcLcuuid := common.GenerateUUID(vpcId)
+			natGatewayLcuuid := a.generateLCUUID(natGatewayId)
+			vpcLcuuid := a.generateLCUUID(vpcId)
 			retNATGateway := model.NATGateway{
 				Lcuuid:       natGatewayLcuuid,
 				Name:         natGatewayName,
@@ -81,7 +82,7 @@ func (a *Aliyun) getNatGateways(region model.Region) (
 			a.regionLcuuidToResourceNum[retNATGateway.RegionLcuuid]++
 
 			// 接口
-			vinterfaceLcuuid := common.GenerateUUID(natGatewayLcuuid)
+			vinterfaceLcuuid := a.generateLCUUID(natGatewayLcuuid)
 			retVInterface := model.VInterface{
 				Lcuuid:        vinterfaceLcuuid,
 				Type:          common.VIF_TYPE_WAN,
@@ -96,7 +97,7 @@ func (a *Aliyun) getNatGateways(region model.Region) (
 
 			// IP
 			for _, ip := range floatingIPs {
-				ipLcuuid := common.GenerateUUID(vinterfaceLcuuid + ip)
+				ipLcuuid := a.generateLCUUID(vinterfaceLcuuid + ip)
 				retIP := model.IP{
 					Lcuuid:           ipLcuuid,
 					VInterfaceLcuuid: vinterfaceLcuuid,
@@ -149,8 +150,8 @@ func (a *Aliyun) getSNATRules(region model.Region, natGatewayId string, snatTabl
 				}
 				snatId := snat.Get("SnatEntryId").MustString()
 				retNATRule := model.NATRule{
-					Lcuuid:           common.GenerateUUID(snatId),
-					NATGatewayLcuuid: common.GenerateUUID(natGatewayId),
+					Lcuuid:           a.generateLCUUID(snatId),
+					NATGatewayLcuuid: a.generateLCUUID(natGatewayId),
 					Type:             "SNAT",
 					Protocol:         "ALL",
 					FloatingIP:       snat.Get("SnatIp").MustString(),
@@ -210,8 +211,8 @@ func (a *Aliyun) getDNATRules(region model.Region, natGatewayId string, dnatTabl
 					key = floatingIP + dnatTableId + floatingIPPortStr + ipProtocol + fixedIP + fixedIPPortStr
 				}
 				retNATRule := model.NATRule{
-					Lcuuid:           common.GenerateUUID(key),
-					NATGatewayLcuuid: common.GenerateUUID(natGatewayId),
+					Lcuuid:           a.generateLCUUID(key),
+					NATGatewayLcuuid: a.generateLCUUID(natGatewayId),
 					Type:             "DNAT",
 					Protocol:         protocol,
 					FloatingIP:       floatingIP,

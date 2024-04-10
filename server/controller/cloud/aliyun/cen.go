@@ -19,7 +19,6 @@ package aliyun
 import (
 	cbn "github.com/aliyun/alibaba-cloud-sdk-go/services/cbn"
 	"github.com/deepflowio/deepflow/server/controller/cloud/model"
-	"github.com/deepflowio/deepflow/server/controller/common"
 )
 
 func (a *Aliyun) getCens(region model.Region) ([]model.CEN, error) {
@@ -65,7 +64,7 @@ func (a *Aliyun) getCens(region model.Region) ([]model.CEN, error) {
 					}
 					vpcLcuuids = append(
 						vpcLcuuids,
-						common.GenerateUUID(cenAttr.Get("ChildInstanceId").MustString()),
+						a.generateLCUUID(cenAttr.Get("ChildInstanceId").MustString()),
 					)
 				}
 			}
@@ -73,7 +72,7 @@ func (a *Aliyun) getCens(region model.Region) ([]model.CEN, error) {
 				continue
 			}
 			retCens = append(retCens, model.CEN{
-				Lcuuid:     common.GenerateUUID(cenId),
+				Lcuuid:     a.generateLCUUID(cenId),
 				Name:       cenName,
 				Label:      cenId,
 				VPCLcuuids: vpcLcuuids,

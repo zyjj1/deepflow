@@ -19,7 +19,6 @@ package aliyun
 import (
 	vpc "github.com/aliyun/alibaba-cloud-sdk-go/services/vpc"
 	"github.com/deepflowio/deepflow/server/controller/cloud/model"
-	"github.com/deepflowio/deepflow/server/controller/common"
 )
 
 func (a *Aliyun) getAZs(region model.Region) ([]model.AZ, error) {
@@ -40,7 +39,7 @@ func (a *Aliyun) getAZs(region model.Region) ([]model.AZ, error) {
 
 			zoneId := az.Get("ZoneId").MustString()
 			retAZ := model.AZ{
-				Lcuuid:       common.GenerateUUID(a.uuidGenerate + "_" + zoneId),
+				Lcuuid:       a.generateLCUUID(a.uuidGenerate + "_" + zoneId),
 				Name:         az.Get("LocalName").MustString(),
 				Label:        zoneId,
 				RegionLcuuid: a.getRegionLcuuid(region.Lcuuid),

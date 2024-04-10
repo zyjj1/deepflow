@@ -19,9 +19,7 @@ package kubernetes_gather
 import (
 	"github.com/deepflowio/deepflow/server/controller/cloud/model"
 	cloudmodel "github.com/deepflowio/deepflow/server/controller/cloud/model"
-	"github.com/deepflowio/deepflow/server/controller/common"
 	"github.com/deepflowio/deepflow/server/controller/genesis"
-	uuid "github.com/satori/go.uuid"
 )
 
 func (k *KubernetesGather) getPrometheusTargets() ([]model.PrometheusTarget, error) {
@@ -38,7 +36,7 @@ func (k *KubernetesGather) getPrometheusTargets() ([]model.PrometheusTarget, err
 			otherLabelsString = p.OtherLabels
 		}
 		prometheusTargets = append(prometheusTargets, cloudmodel.PrometheusTarget{
-			Lcuuid:           common.GetUUID(k.ClusterID+p.Instance+p.Job+otherLabelsString, uuid.Nil),
+			Lcuuid:           k.generateLCUUID(k.ClusterID + p.Instance + p.Job + otherLabelsString),
 			Job:              p.Job,
 			Instance:         p.Instance,
 			ScrapeURL:        p.ScrapeURL,

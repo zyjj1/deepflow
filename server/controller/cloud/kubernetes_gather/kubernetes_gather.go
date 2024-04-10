@@ -18,24 +18,23 @@ package kubernetes_gather
 
 import (
 	"regexp"
+	"strconv"
 	"strings"
 	"time"
 
 	simplejson "github.com/bitly/go-simplejson"
 	mapset "github.com/deckarep/golang-set"
+	logging "github.com/op/go-logging"
+	uuid "github.com/satori/go.uuid"
+
 	cloudcommon "github.com/deepflowio/deepflow/server/controller/cloud/common"
 	"github.com/deepflowio/deepflow/server/controller/cloud/config"
 	"github.com/deepflowio/deepflow/server/controller/cloud/kubernetes_gather/model"
 	"github.com/deepflowio/deepflow/server/controller/common"
 	"github.com/deepflowio/deepflow/server/controller/db/mysql"
+	mysqlcommon "github.com/deepflowio/deepflow/server/controller/db/mysql/common"
 	"github.com/deepflowio/deepflow/server/controller/genesis"
 	"github.com/deepflowio/deepflow/server/controller/statsd"
-	logging "github.com/op/go-logging"
-)
-
-const (
-	K8S_VPC_NAME       = "kubernetes_vpc"
-	K8S_VERSION_PREFIX = "Kubernetes"
 )
 
 var log = logging.MustGetLogger("cloud.kubernetes_gather")
@@ -48,6 +47,7 @@ type KubernetesGather struct {
 	RegionUUID                   string
 	VPCUUID                      string
 	PortNameRegex                string
+	orgID                        int
 	PodNetIPv4CIDRMaxMask        int
 	PodNetIPv6CIDRMaxMask        int
 	customTagLenMax              int
@@ -80,7 +80,7 @@ type networkLcuuidCIDRs struct {
 	cidrs         []string
 }
 
-func NewKubernetesGather(domain *mysql.Domain, subDomain *mysql.SubDomain, cfg config.CloudConfig, isSubDomain bool) *KubernetesGather {
+func NewKubernetesGather(orgID int, domain *mysql.Domain, subDomain *mysql.SubDomain, cfg config.CloudConfig, isSubDomain bool) *KubernetesGather {
 	var name string
 	var displayName string
 	var clusterID string
@@ -176,6 +176,7 @@ func NewKubernetesGather(domain *mysql.Domain, subDomain *mysql.SubDomain, cfg c
 		Lcuuid:                lcuuid,
 		UuidGenerate:          displayName,
 		ClusterID:             clusterID,
+		orgID:                 orgID,
 		RegionUUID:            configJson.Get("region_uuid").MustString(),
 		VPCUUID:               configJson.Get("vpc_uuid").MustString(),
 		PodNetIPv4CIDRMaxMask: podNetIPv4CIDRMaxMask,
@@ -205,6 +206,21 @@ func NewKubernetesGather(domain *mysql.Domain, subDomain *mysql.SubDomain, cfg c
 		nsServiceNameToService:       map[string]map[string]map[string]int{},
 		cloudStatsd:                  statsd.NewCloudStatsd(),
 	}
+}
+
+func (k *KubernetesGather) generateLCUUID(s string) string {
+	if k.orgID != mysqlcommon.DEFAULT_ORG_ID {
+		s += strconv.Itoa(k.orgID)
+	}
+	return common.GetUUID(s, uuid.Nil)
+}
+
+func (k *KubernetesGather) uidGenerateLCUUID(s string) string {
+	if k.orgID == mysqlcommon.DEFAULT_ORG_ID {
+		return s
+	}
+	s += strconv.Itoa(k.orgID)
+	return common.GetUUID(s, uuid.Nil)
 }
 
 func (k *KubernetesGather) getKubernetesInfo() (map[string][]string, error) {

@@ -17,10 +17,10 @@
 package aliyun
 
 import (
+	"sort"
+
 	ecs "github.com/aliyun/alibaba-cloud-sdk-go/services/ecs"
 	"github.com/deepflowio/deepflow/server/controller/cloud/model"
-	"github.com/deepflowio/deepflow/server/controller/common"
-	"sort"
 )
 
 func (a *Aliyun) getRegions() ([]model.Region, error) {
@@ -58,7 +58,7 @@ func (a *Aliyun) getRegions() ([]model.Region, error) {
 			}
 
 			retRegion := model.Region{
-				Lcuuid: common.GenerateUUID(region.Get("RegionId").MustString()),
+				Lcuuid: a.generateLCUUID(region.Get("RegionId").MustString()),
 				Label:  region.Get("RegionId").MustString(),
 				Name:   localName,
 			}

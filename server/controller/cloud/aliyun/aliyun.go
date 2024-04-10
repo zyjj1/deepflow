@@ -20,6 +20,7 @@ import (
 	"errors"
 	"fmt"
 	"sort"
+	"strconv"
 	"strings"
 
 	"github.com/aliyun/alibaba-cloud-sdk-go/sdk"
@@ -31,11 +32,13 @@ import (
 	"github.com/deepflowio/deepflow/server/controller/cloud/model"
 	"github.com/deepflowio/deepflow/server/controller/common"
 	"github.com/deepflowio/deepflow/server/controller/db/mysql"
+	mysqlcommon "github.com/deepflowio/deepflow/server/controller/db/mysql/common"
 )
 
 var log = logging.MustGetLogger("cloud.aliyun")
 
 type Aliyun struct {
+	orgID          int
 	uuid           string
 	uuidGenerate   string
 	regionUuid     string
@@ -54,7 +57,7 @@ type Aliyun struct {
 	debugger *cloudcommon.Debugger
 }
 
-func NewAliyun(domain mysql.Domain, cfg cloudconfig.CloudConfig) (*Aliyun, error) {
+func NewAliyun(orgID int, domain mysql.Domain, cfg cloudconfig.CloudConfig) (*Aliyun, error) {
 	config, err := simplejson.NewJson([]byte(domain.Config))
 	if err != nil {
 		log.Error(err)
@@ -92,7 +95,8 @@ func NewAliyun(domain mysql.Domain, cfg cloudconfig.CloudConfig) (*Aliyun, error
 	}
 
 	return &Aliyun{
-		uuid: domain.Lcuuid,
+		orgID: orgID,
+		uuid:  domain.Lcuuid,
 		// TODO: display_name后期需要修改为uuid_generate
 		uuidGenerate: domain.DisplayName,
 		regionUuid:   config.Get("region_uuid").MustString(),
@@ -120,6 +124,13 @@ func (a *Aliyun) ClearDebugLog() {
 func (a *Aliyun) CheckAuth() error {
 	_, err := sdk.NewClientWithAccessKey(a.regionName, a.secretID, a.secretKey)
 	return err
+}
+
+func (a *Aliyun) generateLCUUID(s string) string {
+	if a.orgID != mysqlcommon.DEFAULT_ORG_ID {
+		s += strconv.Itoa(a.orgID)
+	}
+	return common.GenerateUUID(s)
 }
 
 func (a *Aliyun) getRegionLcuuid(lcuuid string) string {

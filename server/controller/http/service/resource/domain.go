@@ -23,6 +23,7 @@ import (
 	"fmt"
 	"math/rand"
 	"os"
+	"strconv"
 	"strings"
 	"time"
 
@@ -31,10 +32,10 @@ import (
 	"gorm.io/gorm/clause"
 
 	cloudcommon "github.com/deepflowio/deepflow/server/controller/cloud/common"
-	k8s "github.com/deepflowio/deepflow/server/controller/cloud/kubernetes_gather"
 	"github.com/deepflowio/deepflow/server/controller/common"
 	"github.com/deepflowio/deepflow/server/controller/config"
 	"github.com/deepflowio/deepflow/server/controller/db/mysql"
+	mysqlcommon "github.com/deepflowio/deepflow/server/controller/db/mysql/common"
 	httpcommon "github.com/deepflowio/deepflow/server/controller/http/common"
 	servicecommon "github.com/deepflowio/deepflow/server/controller/http/service/common"
 	"github.com/deepflowio/deepflow/server/controller/model"
@@ -245,6 +246,9 @@ func CreateDomain(db *mysql.DB, domainCreate model.DomainCreate, cfg *config.Con
 		if count > 0 {
 			return nil, servicecommon.NewError(httpcommon.RESOURCE_ALREADY_EXIST, fmt.Sprintf("sub_domain cluster_id (%s) already exist", domainCreate.KubernetesClusterID))
 		}
+		if db.ORGID != mysqlcommon.DEFAULT_ORG_ID {
+			domainCreate.KubernetesClusterID += strconv.Itoa(db.ORGID)
+		}
 	}
 
 	log.Infof("create domain (%v)", maskDomainInfo(domainCreate))
@@ -342,7 +346,7 @@ func createKubernetesRelatedResources(db *mysql.DB, domain mysql.Domain, regionL
 		regionLcuuid = common.DEFAULT_REGION
 	}
 	az := mysql.AZ{}
-	az.Lcuuid = cloudcommon.GetAZLcuuidFromUUIDGenerate(domain.DisplayName)
+	az.Lcuuid = cloudcommon.GetAZLcuuidFromUUIDGenerate(db.ORGID, domain.DisplayName)
 	az.Name = domain.Name
 	az.Domain = domain.Lcuuid
 	az.Region = regionLcuuid
@@ -359,7 +363,7 @@ func createKubernetesRelatedResources(db *mysql.DB, domain mysql.Domain, regionL
 	}
 
 	vpc := mysql.VPC{}
-	vpc.Lcuuid = k8s.GetVPCLcuuidFromUUIDGenerate(domain.DisplayName)
+	vpc.Lcuuid = cloudcommon.GetVPCLcuuidFromUUIDGenerate(db.ORGID, domain.DisplayName)
 	vpc.Name = domain.Name
 	vpc.Domain = domain.Lcuuid
 	vpc.Region = regionLcuuid

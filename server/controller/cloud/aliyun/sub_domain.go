@@ -55,7 +55,7 @@ func (a *Aliyun) getSubDomains(region model.Region) ([]model.SubDomain, error) {
 			}
 			configJson, _ := json.Marshal(config)
 			retSubDomains = append(retSubDomains, model.SubDomain{
-				Lcuuid:      common.GenerateUUID(clusterID),
+				Lcuuid:      a.generateLCUUID(clusterID),
 				Name:        cluster.Get("name").MustString(),
 				DisplayName: clusterID,
 				ClusterID:   clusterID,

@@ -52,10 +52,10 @@ type Task struct {
 	subDomainRefreshSignals cmap.ConcurrentMap[string, *queue.OverwriteQueue] // key: subDomainLcuuid
 }
 
-func NewTask(domain mysql.Domain, cfg config.TaskConfig, ctx context.Context, resourceEventQueue *queue.OverwriteQueue) *Task {
+func NewTask(orgID int, domain mysql.Domain, cfg config.TaskConfig, ctx context.Context, resourceEventQueue *queue.OverwriteQueue) *Task {
 
 	tCtx, tCancel := context.WithCancel(ctx)
-	cloudTask := cloud.NewCloud(domain, cfg.CloudCfg, tCtx)
+	cloudTask := cloud.NewCloud(orgID, domain, cfg.CloudCfg, tCtx)
 
 	return &Task{
 		tCtx:                    tCtx,

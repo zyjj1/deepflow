@@ -41,6 +41,7 @@ import (
 	"github.com/deepflowio/deepflow/server/controller/cloud/model"
 	"github.com/deepflowio/deepflow/server/controller/common"
 	"github.com/deepflowio/deepflow/server/controller/db/mysql"
+	mysqlcommon "github.com/deepflowio/deepflow/server/controller/db/mysql/common"
 	"github.com/deepflowio/deepflow/server/controller/genesis"
 	controllermodel "github.com/deepflowio/deepflow/server/controller/model"
 )
@@ -538,7 +539,17 @@ func InetNToA(ip uint32) string {
 	return fmt.Sprintf("%d.%d.%d.%d", data[3], data[2], data[1], data[0])
 }
 
-func GetAZLcuuidFromUUIDGenerate(uuidGenerate string) string {
+func GetVPCLcuuidFromUUIDGenerate(orgID int, uuidGenerate string) string {
+	if orgID != mysqlcommon.DEFAULT_ORG_ID {
+		uuidGenerate += strconv.Itoa(orgID)
+	}
+	return common.GetUUID(uuidGenerate+K8S_VPC_NAME, uuid.Nil)
+}
+
+func GetAZLcuuidFromUUIDGenerate(orgID int, uuidGenerate string) string {
+	if orgID != mysqlcommon.DEFAULT_ORG_ID {
+		uuidGenerate += strconv.Itoa(orgID)
+	}
 	lcuuid := common.GetUUID(uuidGenerate, uuid.Nil)
 	return lcuuid[:len(lcuuid)-2] + "ff"
 }

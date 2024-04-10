@@ -45,6 +45,7 @@ import (
 var log = logging.MustGetLogger("cloud")
 
 type Cloud struct {
+	orgID                   int
 	cfg                     config.CloudConfig
 	cCtx                    context.Context
 	cCancel                 context.CancelFunc
@@ -59,8 +60,8 @@ type Cloud struct {
 }
 
 // TODO 添加参数
-func NewCloud(domain mysql.Domain, cfg config.CloudConfig, ctx context.Context) *Cloud {
-	platform, err := platform.NewPlatform(domain, cfg)
+func NewCloud(orgID int, domain mysql.Domain, cfg config.CloudConfig, ctx context.Context) *Cloud {
+	platform, err := platform.NewPlatform(orgID, domain, cfg)
 	if err != nil {
 		log.Error(err)
 		return nil
@@ -70,6 +71,7 @@ func NewCloud(domain mysql.Domain, cfg config.CloudConfig, ctx context.Context) 
 
 	cCtx, cCancel := context.WithCancel(ctx)
 	return &Cloud{
+		orgID: orgID,
 		basicInfo: model.BasicInfo{
 			Lcuuid: domain.Lcuuid,
 			Name:   domain.Name,
@@ -333,7 +335,7 @@ func (c *Cloud) runKubernetesGatherTask() {
 		if len(c.kubernetesGatherTaskMap) != 0 {
 			return
 		}
-		kubernetesGatherTask := NewKubernetesGatherTask(c.cCtx, &domain, nil, c.cfg, false)
+		kubernetesGatherTask := NewKubernetesGatherTask(c.orgID, c.cCtx, &domain, nil, c.cfg, false)
 		if kubernetesGatherTask == nil {
 			return
 		}
@@ -381,7 +383,7 @@ func (c *Cloud) runKubernetesGatherTask() {
 		addSubDomains = newSubDomains.Difference(oldSubDomains)
 		for _, subDomain := range addSubDomains.ToSlice() {
 			lcuuid := subDomain.(string)
-			kubernetesGatherTask := NewKubernetesGatherTask(c.cCtx, &domain, lcuuidToSubDomain[lcuuid], c.cfg, true)
+			kubernetesGatherTask := NewKubernetesGatherTask(c.orgID, c.cCtx, &domain, lcuuidToSubDomain[lcuuid], c.cfg, true)
 			if kubernetesGatherTask == nil {
 				continue
 			}
@@ -405,7 +407,7 @@ func (c *Cloud) runKubernetesGatherTask() {
 				log.Infof("oldSubDomainConfig: %s", oldSubDomain.SubDomainConfig)
 				log.Infof("newSubDomainConfig: %s", newSubDomain.Config)
 				c.kubernetesGatherTaskMap[lcuuid].Stop()
-				kubernetesGatherTask := NewKubernetesGatherTask(c.cCtx, &domain, lcuuidToSubDomain[lcuuid], c.cfg, true)
+				kubernetesGatherTask := NewKubernetesGatherTask(c.orgID, c.cCtx, &domain, lcuuidToSubDomain[lcuuid], c.cfg, true)
 				if kubernetesGatherTask == nil {
 					continue
 				}

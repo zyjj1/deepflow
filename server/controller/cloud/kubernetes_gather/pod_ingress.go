@@ -21,8 +21,6 @@ import (
 
 	"github.com/bitly/go-simplejson"
 	"github.com/deepflowio/deepflow/server/controller/cloud/model"
-	"github.com/deepflowio/deepflow/server/controller/common"
-	uuid "github.com/satori/go.uuid"
 )
 
 func (k *KubernetesGather) getPodIngresses() (ingresses []model.PodIngress, ingressRules []model.PodIngressRule, ingressRuleBackends []model.PodIngressRuleBackend, err error) {
@@ -76,7 +74,7 @@ func (k *KubernetesGather) getPodIngresses() (ingresses []model.PodIngress, ingr
 		rules := iData.Get("spec").Get("rules")
 		for index := range rules.MustArray() {
 			rule := rules.GetIndex(index)
-			ruleLcuuid := common.GetUUID(uID+rule.Get("host").MustString()+"_"+strconv.Itoa(index), uuid.Nil)
+			ruleLcuuid := k.generateLCUUID(uID + rule.Get("host").MustString() + "_" + strconv.Itoa(index))
 			ingressRule := model.PodIngressRule{
 				Lcuuid:           ruleLcuuid,
 				Host:             rule.Get("host").MustString(),
@@ -127,7 +125,7 @@ func (k *KubernetesGather) getPodIngresses() (ingresses []model.PodIngress, ingr
 				}
 				key := serviceName + "_" + strconv.Itoa(port)
 				ingressRuleBackend := model.PodIngressRuleBackend{
-					Lcuuid:               common.GetUUID(uID+key+path.Get("path").MustString(), uuid.Nil),
+					Lcuuid:               k.generateLCUUID(uID + key + path.Get("path").MustString()),
 					Path:                 path.Get("path").MustString(),
 					Port:                 port,
 					PodServiceLcuuid:     serviceLcuuid,
@@ -142,7 +140,7 @@ func (k *KubernetesGather) getPodIngresses() (ingresses []model.PodIngress, ingr
 			backend, ok = iData.Get("spec").CheckGet("defaultBackend")
 		}
 		if ok {
-			ruleLcuuid := common.GetUUID(uID+"defaultBackend", uuid.Nil)
+			ruleLcuuid := k.generateLCUUID(uID + "defaultBackend")
 			ingressRule := model.PodIngressRule{
 				Lcuuid:           ruleLcuuid,
 				Protocol:         "HTTP",
@@ -187,7 +185,7 @@ func (k *KubernetesGather) getPodIngresses() (ingresses []model.PodIngress, ingr
 			}
 			key := serviceName + "_" + strconv.Itoa(port)
 			ingressRuleBackend := model.PodIngressRuleBackend{
-				Lcuuid:               common.GetUUID(uID+key+"default", uuid.Nil),
+				Lcuuid:               k.generateLCUUID(uID + key + "default"),
 				Port:                 port,
 				PodServiceLcuuid:     serviceLcuuid,
 				PodIngressRuleLcuuid: ruleLcuuid,
@@ -198,7 +196,7 @@ func (k *KubernetesGather) getPodIngresses() (ingresses []model.PodIngress, ingr
 		if _, ok := iData.Get("spec").CheckGet("host"); ok {
 			spec := iData.Get("spec")
 			host := spec.Get("host").MustString()
-			ruleLcuuid := common.GetUUID(uID+host, uuid.Nil)
+			ruleLcuuid := k.generateLCUUID(uID + host)
 			ingressRule := model.PodIngressRule{
 				Lcuuid:           ruleLcuuid,
 				Protocol:         "HTTP",
@@ -238,7 +236,7 @@ func (k *KubernetesGather) getPodIngresses() (ingresses []model.PodIngress, ingr
 			}
 			key := serviceName + "_" + strconv.Itoa(port)
 			ingressRuleBackend := model.PodIngressRuleBackend{
-				Lcuuid:               common.GetUUID(uID+key+"default", uuid.Nil),
+				Lcuuid:               k.generateLCUUID(uID + key + "default"),
 				Port:                 port,
 				PodServiceLcuuid:     serviceLcuuid,
 				PodIngressRuleLcuuid: ruleLcuuid,

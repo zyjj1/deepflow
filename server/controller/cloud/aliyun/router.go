@@ -51,11 +51,11 @@ func (a *Aliyun) getRouterAndTables(region model.Region) ([]model.VRouter, []mod
 			}
 			vpcId := router.Get("VpcId").MustString()
 
-			routerLcuuid := common.GenerateUUID(routerTableId)
+			routerLcuuid := a.generateLCUUID(routerTableId)
 			retVRouter := model.VRouter{
 				Lcuuid:       routerLcuuid,
 				Name:         routerTableName,
-				VPCLcuuid:    common.GenerateUUID(vpcId),
+				VPCLcuuid:    a.generateLCUUID(vpcId),
 				RegionLcuuid: a.getRegionLcuuid(region.Lcuuid),
 			}
 			retVRouters = append(retVRouters, retVRouter)
@@ -86,7 +86,7 @@ func (a *Aliyun) getRouterTables(region model.Region, routerId string) ([]model.
 		return retRoutingTables, err
 	}
 
-	routerLcuuid := common.GenerateUUID(routerId)
+	routerLcuuid := a.generateLCUUID(routerId)
 	for _, rRule := range response {
 		for j := range rRule.Get("RouteEntry").MustArray() {
 			rule := rRule.Get("RouteEntry").GetIndex(j)
@@ -126,7 +126,7 @@ func (a *Aliyun) getRouterTables(region model.Region, routerId string) ([]model.
 			}
 
 			retRule := model.RoutingTable{
-				Lcuuid:        common.GenerateUUID(routerLcuuid + destination + nexthop),
+				Lcuuid:        a.generateLCUUID(routerLcuuid + destination + nexthop),
 				VRouterLcuuid: routerLcuuid,
 				Destination:   destination,
 				NexthopType:   nexthopType,

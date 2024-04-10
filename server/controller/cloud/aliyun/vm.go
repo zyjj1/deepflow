@@ -73,8 +73,8 @@ func (a *Aliyun) getVMs(region model.Region) (
 				continue
 			}
 
-			vmLcuuid := common.GenerateUUID(vmId)
-			VPCLcuuid := common.GenerateUUID(vpcId)
+			vmLcuuid := a.generateLCUUID(vmId)
+			VPCLcuuid := a.generateLCUUID(vpcId)
 			vmState := common.VM_STATE_EXCEPTION
 			if vmStatus == "Running" {
 				vmState = common.VM_STATE_RUNNING
@@ -103,7 +103,7 @@ func (a *Aliyun) getVMs(region model.Region) (
 				State:        vmState,
 				IP:           pIP,
 				CreatedAt:    createdAt,
-				AZLcuuid:     common.GenerateUUID(a.uuidGenerate + "_" + zoneId),
+				AZLcuuid:     a.generateLCUUID(a.uuidGenerate + "_" + zoneId),
 				RegionLcuuid: a.getRegionLcuuid(region.Lcuuid),
 			}
 			retVMs = append(retVMs, retVM)
@@ -115,9 +115,9 @@ func (a *Aliyun) getVMs(region model.Region) (
 			priority := 0
 			for _, securityGroupId := range securityGroupIds {
 				retSecurityGroup := model.VMSecurityGroup{
-					Lcuuid:              common.GenerateUUID(vmLcuuid + securityGroupId),
+					Lcuuid:              a.generateLCUUID(vmLcuuid + securityGroupId),
 					VMLcuuid:            vmLcuuid,
-					SecurityGroupLcuuid: common.GenerateUUID(securityGroupId),
+					SecurityGroupLcuuid: a.generateLCUUID(securityGroupId),
 					Priority:            priority,
 				}
 				retVMSecurityGroups = append(retVMSecurityGroups, retSecurityGroup)
@@ -126,7 +126,7 @@ func (a *Aliyun) getVMs(region model.Region) (
 			// VM PublicIPs
 			publicIPs := vm.Get("PublicIpAddress").Get("IpAddress").MustStringArray()
 			for _, publicIP := range publicIPs {
-				vinterfaceLcuuid := common.GenerateUUID(vmLcuuid + publicIP)
+				vinterfaceLcuuid := a.generateLCUUID(vmLcuuid + publicIP)
 				retVInterface := model.VInterface{
 					Lcuuid:        vinterfaceLcuuid,
 					Type:          common.VIF_TYPE_WAN,
@@ -139,7 +139,7 @@ func (a *Aliyun) getVMs(region model.Region) (
 				}
 				retVInterfaces = append(retVInterfaces, retVInterface)
 
-				ipLcuuid := common.GenerateUUID(vinterfaceLcuuid + publicIP)
+				ipLcuuid := a.generateLCUUID(vinterfaceLcuuid + publicIP)
 				retIP := model.IP{
 					Lcuuid:           ipLcuuid,
 					VInterfaceLcuuid: vinterfaceLcuuid,
@@ -148,7 +148,7 @@ func (a *Aliyun) getVMs(region model.Region) (
 				}
 				retIPs = append(retIPs, retIP)
 
-				floatingIPLcuuid := common.GenerateUUID(vmLcuuid + publicIP)
+				floatingIPLcuuid := a.generateLCUUID(vmLcuuid + publicIP)
 				retFloatingIP := model.FloatingIP{
 					Lcuuid:        floatingIPLcuuid,
 					IP:            publicIP,
@@ -198,10 +198,10 @@ func (a *Aliyun) getVMPorts(region model.Region) ([]model.VInterface, []model.IP
 				continue
 			}
 
-			portLcuuid := common.GenerateUUID(port.Get("NetworkInterfaceId").MustString())
-			deviceLcuuid := common.GenerateUUID(instanceId)
-			networkLcuuid := common.GenerateUUID(port.Get("VSwitchId").MustString())
-			vpcLcuuid := common.GenerateUUID(port.Get("VpcId").MustString())
+			portLcuuid := a.generateLCUUID(port.Get("NetworkInterfaceId").MustString())
+			deviceLcuuid := a.generateLCUUID(instanceId)
+			networkLcuuid := a.generateLCUUID(port.Get("VSwitchId").MustString())
+			vpcLcuuid := a.generateLCUUID(port.Get("VpcId").MustString())
 			mac := port.Get("MacAddress").MustString()
 			retVInterface := model.VInterface{
 				Lcuuid:        portLcuuid,
@@ -230,10 +230,10 @@ func (a *Aliyun) getVMPorts(region model.Region) ([]model.VInterface, []model.IP
 					continue
 				}
 				retIP := model.IP{
-					Lcuuid:           common.GenerateUUID(portLcuuid + privateIP),
+					Lcuuid:           a.generateLCUUID(portLcuuid + privateIP),
 					VInterfaceLcuuid: portLcuuid,
 					IP:               privateIP,
-					SubnetLcuuid:     common.GenerateUUID(networkLcuuid),
+					SubnetLcuuid:     a.generateLCUUID(networkLcuuid),
 					RegionLcuuid:     a.getRegionLcuuid(region.Lcuuid),
 				}
 				retIPs = append(retIPs, retIP)
@@ -243,7 +243,7 @@ func (a *Aliyun) getVMPorts(region model.Region) ([]model.VInterface, []model.IP
 				if publicIP == "" {
 					continue
 				}
-				publicPortLcuuid := common.GenerateUUID(portLcuuid)
+				publicPortLcuuid := a.generateLCUUID(portLcuuid)
 				retVInterface := model.VInterface{
 					Lcuuid:        publicPortLcuuid,
 					Type:          common.VIF_TYPE_WAN,
@@ -257,14 +257,14 @@ func (a *Aliyun) getVMPorts(region model.Region) ([]model.VInterface, []model.IP
 				retVInterfaces = append(retVInterfaces, retVInterface)
 
 				retIP = model.IP{
-					Lcuuid:           common.GenerateUUID(deviceLcuuid + publicIP),
+					Lcuuid:           a.generateLCUUID(deviceLcuuid + publicIP),
 					VInterfaceLcuuid: publicPortLcuuid,
 					IP:               publicIP,
 					RegionLcuuid:     a.getRegionLcuuid(region.Lcuuid),
 				}
 				retIPs = append(retIPs, retIP)
 
-				floatingIPLcuuid := common.GenerateUUID(deviceLcuuid + publicIP)
+				floatingIPLcuuid := a.generateLCUUID(deviceLcuuid + publicIP)
 				retFloatingIP := model.FloatingIP{
 					Lcuuid:        floatingIPLcuuid,
 					IP:            publicIP,
@@ -276,7 +276,7 @@ func (a *Aliyun) getVMPorts(region model.Region) ([]model.VInterface, []model.IP
 				retFloatingIPs = append(retFloatingIPs, retFloatingIP)
 
 				retNATRule := model.NATRule{
-					Lcuuid:           common.GenerateUUID(publicIP + "_" + privateIP),
+					Lcuuid:           a.generateLCUUID(publicIP + "_" + privateIP),
 					Type:             "DNAT",
 					Protocol:         "ALL",
 					FloatingIP:       publicIP,

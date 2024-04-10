@@ -308,8 +308,8 @@ func TestAZInfo_rebalanceAnalyzer(t *testing.T) {
 		t.Run(tt.name, func(t *testing.T) {
 			p := &AZInfo{
 				vTapIDToTraffic: tt.fields.vTapIDToTraffic,
-				vtaps:           tt.fields.vtaps,
-				analyzers:       tt.fields.analyzers,
+				// vtaps:           tt.fields.vtaps,
+				analyzers: tt.fields.analyzers,
 			}
 			got, got1 := p.rebalanceAnalyzer(tt.arg.ifCheck)
 			if !tt.isAllNewVTaps {

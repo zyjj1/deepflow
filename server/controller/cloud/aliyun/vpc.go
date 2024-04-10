@@ -19,7 +19,6 @@ package aliyun
 import (
 	vpc "github.com/aliyun/alibaba-cloud-sdk-go/services/vpc"
 	"github.com/deepflowio/deepflow/server/controller/cloud/model"
-	"github.com/deepflowio/deepflow/server/controller/common"
 )
 
 func (a *Aliyun) getVPCs(region model.Region) ([]model.VPC, error) {
@@ -49,7 +48,7 @@ func (a *Aliyun) getVPCs(region model.Region) ([]model.VPC, error) {
 				}
 			}
 
-			vpcLcuuid := common.GenerateUUID(vpcId)
+			vpcLcuuid := a.generateLCUUID(vpcId)
 			retVPC := model.VPC{
 				Lcuuid:       vpcLcuuid,
 				Name:         vpcName,
