@@ -72,7 +72,7 @@ type Policy struct {
 	ORGID
 }
 
-func newPolicy(vtapID int, billingMethod string, orgID ORGID) *Policy {
+func NewPolicy(vtapID int, billingMethod string, orgID ORGID) *Policy {
 	return &Policy{
 		vtapID:        vtapID,
 		billingMethod: billingMethod,
@@ -180,11 +180,11 @@ func (p *Policy) getPolicyVersion(functions mapset.Set) uint64 {
 	return 0xFFFFFFFF
 }
 
-func (p *Policy) getAllSerializeString() []byte {
+func (p *Policy) GetAllSerializeString() []byte {
 	return p.serializeString
 }
 
-func (p *Policy) getAllVersion() uint64 {
+func (p *Policy) GetAllVersion() uint64 {
 	return p.version
 }
 
@@ -227,6 +227,30 @@ func (p *Policy) merger(other *Policy) {
 	}
 }
 
+func (p *Policy) MergeIngesterPolicy(other *Policy) {
+	if len(other.flowACLs) != 0 {
+		p.flowACLs = append(p.flowACLs, other.flowACLs...)
+		p.version += other.version
+	}
+}
+
+func (p *Policy) GenerateIngesterData() {
+	var err error
+	if len(p.flowACLs) > 0 {
+		flowACLsProto := trident.FlowAcls{
+			FlowAcl: p.flowACLs,
+		}
+		p.serializeString, err = flowACLsProto.Marshal()
+		if err != nil {
+			log.Error(p.Log(err.Error()))
+		} else {
+			h64 := fnv.New64()
+			h64.Write(p.serializeString)
+			p.allDataHash = h64.Sum64()
+		}
+	}
+}
+
 func (p *Policy) String() string {
 	return fmt.Sprintf("vtap_id: %d, version: %d, flow_acls: %d, allDataHash: %d, "+
 		"pcapVersion: %d, pcap_flow_acls: %d, pcapDataHash: %d "+
@@ -257,9 +281,9 @@ func newPolicyDaTaOP(metaData *MetaData, billingMethod string) *PolicyDataOP {
 	vtapIDToPolicy := &atomic.Value{}
 	vtapIDToPolicy.Store(make(map[int]*Policy))
 	allVTapSharePolicy := &atomic.Value{}
-	allVTapSharePolicy.Store(newPolicy(0, billingMethod, metaData.ORGID))
+	allVTapSharePolicy.Store(NewPolicy(0, billingMethod, metaData.ORGID))
 	dropletPolicy := &atomic.Value{}
-	dropletPolicy.Store(newPolicy(-1, billingMethod, metaData.ORGID))
+	dropletPolicy.Store(NewPolicy(-1, billingMethod, metaData.ORGID))
 	return &PolicyDataOP{
 		rawData:            rawData,
 		metaData:           metaData,
@@ -275,7 +299,7 @@ func newPolicyDaTaOP(metaData *MetaData, billingMethod string) *PolicyDataOP {
 func (op *PolicyDataOP) String() string {
 	vtapIDToPolicy := op.getVTapIDToPolicy()
 	allVTapSharePolicy := op.getAllVTapSharePolicy()
-	dropletPolicy := op.getDropletPolicy()
+	dropletPolicy := op.GetDropletPolicy()
 	result := "\n"
 	for _, vtapPolicy := range vtapIDToPolicy {
 		result += fmt.Sprintf("%s\n", vtapPolicy)
@@ -309,7 +333,7 @@ func (op *PolicyDataOP) updateAllVTapSharePolicy(data *Policy) {
 	op.allVTapSharePolicy.Store(data)
 }
 
-func (op *PolicyDataOP) getDropletPolicy() *Policy {
+func (op *PolicyDataOP) GetDropletPolicy() *Policy {
 	return op.dropletPolicy.Load().(*Policy)
 }
 
@@ -318,11 +342,11 @@ func (op *PolicyDataOP) updateDropletPolicy(data *Policy) {
 }
 
 func (op *PolicyDataOP) getDropletPolicyVersion() uint64 {
-	return op.getDropletPolicy().getAllVersion()
+	return op.GetDropletPolicy().GetAllVersion()
 }
 
 func (op *PolicyDataOP) getDropletPolicyStr() []byte {
-	return op.getDropletPolicy().getAllSerializeString()
+	return op.GetDropletPolicy().GetAllSerializeString()
 }
 
 func (op *PolicyDataOP) getVTapPolicyVersion(vtapID int, functions mapset.Set) uint64 {
@@ -657,8 +681,8 @@ func (op *PolicyDataOP) generateProtoActions(acl *models.ACL) (map[int][]*triden
 
 func (op *PolicyDataOP) generatePolicies() {
 	vtapIDToPolicy := make(map[int]*Policy)
-	allVTapSharePolicy := newPolicy(0, op.billingMethod, op.metaData.ORGID)
-	dropletPolicy := newPolicy(-1, op.billingMethod, op.metaData.ORGID)
+	allVTapSharePolicy := NewPolicy(0, op.billingMethod, op.metaData.ORGID)
+	dropletPolicy := NewPolicy(-1, op.billingMethod, op.metaData.ORGID)
 	rawData := op.GetRawData()
 
 	dbDataCache := op.metaData.GetDBDataCache()
@@ -720,7 +744,7 @@ func (op *PolicyDataOP) generatePolicies() {
 			for vtapID, npbActions := range vtapIDToNpbActions {
 				vtapPolicy, ok := vtapIDToPolicy[vtapID]
 				if ok == false {
-					vtapPolicy = newPolicy(vtapID, op.billingMethod, op.metaData.ORGID)
+					vtapPolicy = NewPolicy(vtapID, op.billingMethod, op.metaData.ORGID)
 					vtapIDToPolicy[vtapID] = vtapPolicy
 				}
 				tFlowACL := proto.Clone(flowACL).(*trident.FlowAcl)
@@ -749,7 +773,7 @@ func (op *PolicyDataOP) generatePolicies() {
 			for vtapID, npbActions := range vtapIDToNpbActions {
 				vtapPolicy, ok := vtapIDToPolicy[vtapID]
 				if ok == false {
-					vtapPolicy = newPolicy(vtapID, op.billingMethod, op.metaData.ORGID)
+					vtapPolicy = NewPolicy(vtapID, op.billingMethod, op.metaData.ORGID)
 					vtapIDToPolicy[vtapID] = vtapPolicy
 				}
 				aFlowACL := proto.Clone(flowACL).(*trident.FlowAcl)
@@ -804,7 +828,7 @@ func (op *PolicyDataOP) checkNewPolicies(vtapIDToPolicy map[int]*Policy,
 	}
 	oldVTapIDToPolicy := op.getVTapIDToPolicy()
 	oldAllVTapSharePolicy := op.getAllVTapSharePolicy()
-	oldDropletPolicy := op.getDropletPolicy()
+	oldDropletPolicy := op.GetDropletPolicy()
 	for _, vtapID := range vtapIDs {
 		vtapPolicy, ok := vtapIDToPolicy[vtapID]
 		if ok == false {

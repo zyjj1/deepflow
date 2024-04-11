@@ -57,9 +57,10 @@ func (e *TSDBEvent) AnalyzerSync(ctx context.Context, in *api.SyncRequest) (*api
 	tsdbIP := in.GetCtrlIp()
 	processName := in.GetProcessName()
 	nodeInfo := trisolaris.GetGNodeInfo()
-	versionPlatformData := nodeInfo.GetPlatformDataVersion()
-	versionGroups := nodeInfo.GetGroupsVersion()
-	versionPolicy := nodeInfo.GetPolicyVersion()
+
+	versionPlatformData := trisolaris.GetIngesterPlatformDataVersion()
+	versionGroups := trisolaris.GetIngesterGroupProtoVersion()
+	versionPolicy := trisolaris.GetIngesterPolicyVersion()
 	if versionPlatformData != in.GetVersionPlatformData() ||
 		versionGroups != in.GetVersionGroups() || versionPolicy != in.GetVersionAcls() {
 		log.Infof("ctrl_ip is %s, (platform data version %d -> %d), "+
@@ -109,15 +110,15 @@ func (e *TSDBEvent) AnalyzerSync(ctx context.Context, in *api.SyncRequest) (*api
 	configure := e.generateConfig(tsdbIP)
 	platformData := []byte{}
 	if versionPlatformData != in.GetVersionPlatformData() {
-		platformData = nodeInfo.GetPlatformDataStr()
+		platformData = trisolaris.GetIngesterPlatformDataStr()
 	}
 	groups := []byte{}
 	if versionGroups != in.GetVersionGroups() {
-		groups = nodeInfo.GetGroups()
+		groups = trisolaris.GetIngesterGroupProtoStr()
 	}
 	acls := []byte{}
 	if versionPolicy != in.GetVersionAcls() {
-		acls = nodeInfo.GetPolicy()
+		acls = trisolaris.GetIngesterPolicyStr()
 	}
 	podIPs := nodeInfo.GetPodIPs()
 	vTapIPs := vTapInfo.GetVTapIPs()
@@ -149,9 +150,9 @@ func (e *TSDBEvent) pushResponse(in *api.SyncRequest) (*api.SyncResponse, error)
 			}, fmt.Errorf("no find tsdb(%s) cache", tsdbIP)
 		}
 	}
-	versionPlatformData := nodeInfo.GetPlatformDataVersion()
-	versionGroups := nodeInfo.GetGroupsVersion()
-	versionPolicy := nodeInfo.GetPolicyVersion()
+	versionPlatformData := trisolaris.GetIngesterPlatformDataVersion()
+	versionGroups := trisolaris.GetIngesterGroupProtoVersion()
+	versionPolicy := trisolaris.GetIngesterPolicyVersion()
 	if versionPlatformData != in.GetVersionPlatformData() ||
 		versionGroups != in.GetVersionGroups() || versionPolicy != in.GetVersionAcls() {
 		log.Infof("push ctrl_ip is %s, (platform data version %d -> %d), "+
@@ -164,15 +165,15 @@ func (e *TSDBEvent) pushResponse(in *api.SyncRequest) (*api.SyncResponse, error)
 	configure := e.generateConfig(tsdbIP)
 	platformData := []byte{}
 	if versionPlatformData != in.GetVersionPlatformData() {
-		platformData = nodeInfo.GetPlatformDataStr()
+		platformData = trisolaris.GetIngesterPlatformDataStr()
 	}
 	groups := []byte{}
 	if versionGroups != in.GetVersionGroups() {
-		groups = nodeInfo.GetGroups()
+		groups = trisolaris.GetIngesterGroupProtoStr()
 	}
 	acls := []byte{}
 	if versionPolicy != in.GetVersionAcls() {
-		acls = nodeInfo.GetPolicy()
+		acls = trisolaris.GetIngesterPolicyStr()
 	}
 	podIPs := nodeInfo.GetPodIPs()
 	vTapIPs := trisolaris.GetGVTapInfo(DEFAULT_ORG_ID).GetVTapIPs()

@@ -120,6 +120,10 @@ func (m *MetaData) GetPlatformDataOP() *PlatformDataOP {
 	return m.platformDataOP
 }
 
+func (m *MetaData) GetPolicyDataOP() *PolicyDataOP {
+	return m.policyDataOP
+}
+
 func (m *MetaData) GetGroupDataOP() *GroupDataOP {
 	return m.groupDataOP
 }

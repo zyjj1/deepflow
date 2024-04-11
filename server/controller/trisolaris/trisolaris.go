@@ -18,6 +18,7 @@ package trisolaris
 
 import (
 	"context"
+	"sync/atomic"
 	"time"
 
 	"github.com/op/go-logging"
@@ -26,6 +27,7 @@ import (
 	. "github.com/deepflowio/deepflow/server/controller/common"
 	"github.com/deepflowio/deepflow/server/controller/db/mysql"
 	"github.com/deepflowio/deepflow/server/controller/election"
+	. "github.com/deepflowio/deepflow/server/controller/trisolaris/common"
 	"github.com/deepflowio/deepflow/server/controller/trisolaris/config"
 	"github.com/deepflowio/deepflow/server/controller/trisolaris/dbmgr"
 	"github.com/deepflowio/deepflow/server/controller/trisolaris/kubernetes"
@@ -60,8 +62,14 @@ type TrisolarisManager struct {
 	config          *config.Config
 	defaultDB       *gorm.DB
 	startTime       int64
-	ctx             context.Context
-	cancel          context.CancelFunc
+
+	// tsdb data
+	platformData *atomic.Value // *metadata.PlatformData
+	groupProto   *metadata.GroupProto
+	policyData   *atomic.Value // *metadata.Policy
+
+	ctx    context.Context
+	cancel context.CancelFunc
 }
 
 var trisolarisManager *TrisolarisManager
@@ -203,6 +211,10 @@ func NewTrisolarisManager(cfg *config.Config, db *gorm.DB) *TrisolarisManager {
 	if trisolarisManager == nil {
 		cfg.Convert()
 		ctx, cancel := context.WithCancel(context.Background())
+		platformData := &atomic.Value{}
+		platformData.Store(metadata.NewPlatformData("", "", 0, 0))
+		policyData := &atomic.Value{}
+		policyData.Store(metadata.NewPolicy(-2, "", 0))
 		trisolarisManager = &TrisolarisManager{
 			orgToTrisolaris: [ORG_ID_INDEX_MAX]*Trisolaris{},
 			refreshOP:       refresh.NewRefreshOP(db, cfg.NodeIP),
@@ -210,6 +222,9 @@ func NewTrisolarisManager(cfg *config.Config, db *gorm.DB) *TrisolarisManager {
 			teamIDStrToInt:  make(map[string]int),
 			config:          cfg,
 			defaultDB:       db,
+			platformData:    platformData,
+			groupProto:      metadata.NewGroupProto(0, 0),
+			policyData:      policyData,
 			ctx:             ctx,
 			cancel:          cancel,
 		}
@@ -222,6 +237,7 @@ func (m *TrisolarisManager) Start() error {
 	go m.TimedCheckORG()
 	go m.refreshOP.TimedRefreshIPs()
 	m.startTime = getStartTime()
+	m.groupProto.SetStartTime(m.startTime)
 	orgIDs, err := mysql.GetORGIDs()
 	if err != nil {
 		log.Error(err)
@@ -257,6 +273,7 @@ func (m *TrisolarisManager) Start() error {
 	}
 	m.teamIDToOrgID = teamIDToOrgID
 	m.teamIDStrToInt = teamIDStrToInt
+	go m.TimedGenerateTSDBData()
 	log.Infof("finish orgdata init %v", orgIDs)
 	return nil
 }
@@ -368,6 +385,121 @@ func (m *TrisolarisManager) TimedCheckORG() {
 			log.Info("start check org data from timed")
 			m.checkORG()
 			log.Info("end check org data from timed")
+		}
+	}
+}
+
+func GetIngesterPlatformDataVersion() uint64 {
+	return trisolarisManager.getIngesterPlatformDataVersion()
+}
+
+func GetIngesterPlatformDataStr() []byte {
+	return trisolarisManager.getIngesterPlatformDataStr()
+}
+
+func GetIngesterGroupProtoVersion() uint64 {
+	return trisolarisManager.getIngesterGroupProtoVersion()
+}
+
+func GetIngesterGroupProtoStr() []byte {
+	return trisolarisManager.getIngesterGroupProtoStr()
+}
+
+func GetIngesterPolicyVersion() uint64 {
+	return trisolarisManager.getIngesterPolicyDataVersion()
+}
+
+func GetIngesterPolicyStr() []byte {
+	return trisolarisManager.getIngesterPolicyDataStr()
+}
+
+func (m *TrisolarisManager) getIngesterPlatformData() *metadata.PlatformData {
+	return m.platformData.Load().(*metadata.PlatformData)
+}
+
+func (m *TrisolarisManager) updateIngesterPlatformData(data *metadata.PlatformData) {
+	m.platformData.Store(data)
+}
+
+func (m *TrisolarisManager) getIngesterPolicyata() *metadata.Policy {
+	return m.policyData.Load().(*metadata.Policy)
+}
+
+func (m *TrisolarisManager) updateIngesterPolicyData(data *metadata.Policy) {
+	m.policyData.Store(data)
+}
+
+func (m *TrisolarisManager) getIngesterPlatformDataVersion() uint64 {
+	return m.getIngesterPlatformData().GetPlatformDataVersion()
+}
+
+func (m *TrisolarisManager) getIngesterPlatformDataStr() []byte {
+	return m.getIngesterPlatformData().GetPlatformDataStr()
+}
+
+func (m *TrisolarisManager) getIngesterGroupProtoVersion() uint64 {
+	return m.groupProto.GetVersion()
+}
+
+func (m *TrisolarisManager) getIngesterGroupProtoStr() []byte {
+	return m.groupProto.GetGroups()
+}
+
+func (m *TrisolarisManager) getIngesterPolicyDataVersion() uint64 {
+	return m.getIngesterPolicyata().GetAllVersion()
+}
+
+func (m *TrisolarisManager) getIngesterPolicyDataStr() []byte {
+	return m.getIngesterPolicyata().GetAllSerializeString()
+}
+
+func (m *TrisolarisManager) generateTSDBData() {
+	orgIDs, err := mysql.GetORGIDs()
+	if err != nil {
+		log.Error(err)
+		return
+	}
+
+	platformData := metadata.NewPlatformData("platformData", "", 0, PLATFORM_DATA_FOR_INGESTER_MERGE)
+	groupData := metadata.NewGroupData(nil, nil)
+	policyData := metadata.NewPolicy(-2, "", 0)
+	for _, orgID := range orgIDs {
+		if m.CheckOrgID(orgID) == false {
+			continue
+		}
+		trisolaris := m.orgToTrisolaris[orgID]
+		if trisolaris == nil {
+			continue
+		}
+		orgPlatformData := trisolaris.nodeInfo.GetPlatformData()
+		if orgPlatformData != nil {
+			platformData.Merge(orgPlatformData)
+		}
+		orgGroupData := trisolaris.metaData.GetGroupDataOP().GetDropletGroupsData()
+		if orgGroupData != nil {
+			groupData.Merge(orgGroupData)
+		}
+		orgPolicyData := trisolaris.metaData.GetPolicyDataOP().GetDropletPolicy()
+		policyData.MergeIngesterPolicy(orgPolicyData)
+
+	}
+	platformData.GeneratePlatformDataResult()
+	m.updateIngesterPlatformData(platformData)
+	m.groupProto.GenerateIngesterGroup(groupData)
+	policyData.GenerateIngesterData()
+	m.updateIngesterPolicyData(policyData)
+}
+
+func (m *TrisolarisManager) TimedGenerateTSDBData() {
+	m.generateTSDBData()
+	interval := time.Duration(60)
+	ticker := time.NewTicker(interval * time.Second).C
+	for {
+		select {
+		case <-ticker:
+			log.Info("start generate tsdb data from timed")
+			m.generateTSDBData()
+			log.Info("end generate tsdb data from timed")
 		}
 	}
 }

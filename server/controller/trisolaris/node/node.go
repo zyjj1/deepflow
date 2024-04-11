@@ -102,18 +102,30 @@ func NewNodeInfo(db *gorm.DB, metaData *metadata.MetaData, cfg *config.Config, o
 }
 
 func (n *NodeInfo) GetTSDBCache(key string) *TSDBCache {
+	if n == nil {
+		return nil
+	}
 	return n.tsdbCaches.Get(key)
 }
 
 func (n *NodeInfo) GetPlatformDataVersion() uint64 {
-	return n.getPlatformData().GetPlatformDataVersion()
+	if n == nil {
+		return 0
+	}
+	return n.GetPlatformData().GetPlatformDataVersion()
 }
 
 func (n *NodeInfo) GetPlatformDataStr() []byte {
-	return n.getPlatformData().GetPlatformDataStr()
+	if n == nil {
+		return nil
+	}
+	return n.GetPlatformData().GetPlatformDataStr()
 }
 
 func (n *NodeInfo) GetPodIPs() []*trident.PodIp {
+	if n == nil {
+		return nil
+	}
 	return n.metaData.GetPlatformDataOP().GetPodIPs()
 }
 
@@ -639,18 +651,30 @@ func (n *NodeInfo) isRegisterController() {
 }
 
 func (n *NodeInfo) GetGroups() []byte {
+	if n == nil {
+		return nil
+	}
 	return n.metaData.GetDropletGroups()
 }
 
 func (n *NodeInfo) GetGroupsVersion() uint64 {
+	if n == nil {
+		return 0
+	}
 	return n.metaData.GetDropletGroupsVersion()
 }
 
 func (n *NodeInfo) GetPolicy() []byte {
+	if n == nil {
+		return nil
+	}
 	return n.metaData.GetDropletPolicyStr()
 }
 
 func (n *NodeInfo) GetPolicyVersion() uint64 {
+	if n == nil {
+		return 0
+	}
 	return n.metaData.GetDropletPolicyVersion()
 }
 
@@ -711,7 +735,10 @@ func (n *NodeInfo) registerControllerToDB(data *models.Controller) {
 	}
 }
 
-func (n *NodeInfo) getPlatformData() *metadata.PlatformData {
+func (n *NodeInfo) GetPlatformData() *metadata.PlatformData {
+	if n == nil {
+		return nil
+	}
 	return n.platformData.Load().(*metadata.PlatformData)
 }
 

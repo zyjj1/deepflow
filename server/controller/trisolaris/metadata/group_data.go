@@ -61,20 +61,25 @@ type GroupProto struct {
 	ORGID
 }
 
-func newGroupProto(orgID ORGID) *GroupProto {
+func NewGroupProto(orgID ORGID, startTime int64) *GroupProto {
 	groups := &atomic.Value{}
 	groups.Store([]byte{})
 	return &GroupProto{
 		groupVersion: 0,
 		groups:       groups,
 		groupHash:    0,
+		startTime:    startTime,
 		ORGID:        orgID,
 	}
 }
 
 func (g *GroupProto) String() string {
 	return fmt.Sprintf("groupVersion: %d, groupHash: %d, dataLen: %d", g.groupVersion,
-		g.groupHash, len(g.getGroups()))
+		g.groupHash, len(g.GetGroups()))
+}
+
+func (g *GroupProto) SetStartTime(startTime int64) {
+	g.startTime = startTime
 }
 
 func (g *GroupProto) checkVersion(groupHash uint64) {
@@ -89,16 +94,20 @@ func (g *GroupProto) checkVersion(groupHash uint64) {
 	}
 }
 
-func (g *GroupProto) getVersion() uint64 {
+func (g *GroupProto) GetVersion() uint64 {
 	return atomic.LoadUint64(&g.groupVersion)
 }
 
-func (g *GroupProto) getGroups() []byte {
+func (g *GroupProto) GetGroups() []byte {
 	return g.groups.Load().([]byte)
 }
 
 func (g *GroupProto) updateGroups(groups []byte) {
 	g.groups.Store(groups)
+}
+
+func (g *GroupProto) GenerateIngesterGroup(groupData *GroupData) {
+	g.generateGroupProto(groupData.groupsProto, groupData.svcsProto)
 }
 
 func (g *GroupProto) generateGroupProto(groupsProto []*trident.Group, svcs []*trident.ServiceInfo) {
@@ -117,12 +126,34 @@ func (g *GroupProto) generateGroupProto(groupsProto []*trident.Group, svcs []*tr
 	}
 }
 
+type GroupData struct {
+	groupsProto []*trident.Group
+	svcsProto   []*trident.ServiceInfo
+}
+
+func NewGroupData(groupsProto []*trident.Group, svcsProto []*trident.ServiceInfo) *GroupData {
+	return &GroupData{
+		groupsProto: groupsProto,
+		svcsProto:   svcsProto,
+	}
+}
+
+func (d *GroupData) Merge(other *GroupData) {
+	if len(other.groupsProto) > 0 {
+		d.groupsProto = append(d.groupsProto, other.groupsProto...)
+	}
+	if len(other.svcsProto) > 0 {
+		d.svcsProto = append(d.svcsProto, other.svcsProto...)
+	}
+}
+
 type GroupDataOP struct {
 	metaData          *MetaData
 	serviceDataOP     *ServiceDataOP
 	groupRawData      *GroupRawData
 	tridentGroupProto *GroupProto
 	dropletGroupProto *GroupProto
+	dropletGroupData  *GroupData
 	ORGID
 }
 
@@ -131,8 +162,9 @@ func newGroupDataOP(metaData *MetaData) *GroupDataOP {
 		groupRawData:      newGroupRawData(),
 		serviceDataOP:     newServiceDataOP(metaData),
 		metaData:          metaData,
-		tridentGroupProto: newGroupProto(metaData.ORGID),
-		dropletGroupProto: newGroupProto(metaData.ORGID),
+		tridentGroupProto: NewGroupProto(metaData.ORGID, metaData.startTime),
+		dropletGroupProto: NewGroupProto(metaData.ORGID, metaData.startTime),
+		dropletGroupData:  NewGroupData(nil, nil),
 		ORGID:             metaData.ORGID,
 	}
 }
@@ -158,19 +190,23 @@ func (g *GroupDataOP) GetGroupIDToPodServiceIDs() map[int][]int {
 }
 
 func (g *GroupDataOP) getTridentGroups() []byte {
-	return g.tridentGroupProto.getGroups()
+	return g.tridentGroupProto.GetGroups()
 }
 
 func (g *GroupDataOP) getTridentGroupsVersion() uint64 {
-	return g.tridentGroupProto.getVersion()
+	return g.tridentGroupProto.GetVersion()
 }
 
 func (g *GroupDataOP) getDropletGroups() []byte {
-	return g.dropletGroupProto.getGroups()
+	return g.dropletGroupProto.GetGroups()
 }
 
 func (g *GroupDataOP) getDropletGroupsVersion() uint64 {
-	return g.dropletGroupProto.getVersion()
+	return g.dropletGroupProto.GetVersion()
+}
+
+func (g *GroupDataOP) GetDropletGroupsData() *GroupData {
+	return g.dropletGroupData
 }
 
 // The data traversal must be kept in order to ensure
@@ -549,9 +585,10 @@ func (g *GroupDataOP) generateTridentGroupProto() {
 }
 
 func (g *GroupDataOP) generateDropletGroupProto() {
-	g.dropletGroupProto.generateGroupProto(
-		g.generateResourceGroupData(g.groupRawData.dropletGroups),
-		g.serviceDataOP.GetServiceData())
+	groupsProto := g.generateResourceGroupData(g.groupRawData.dropletGroups)
+	svcsProto := g.serviceDataOP.GetServiceData()
+	g.dropletGroupData = NewGroupData(groupsProto, svcsProto)
+	g.dropletGroupProto.generateGroupProto(groupsProto, svcsProto)
 }
 
 func (g *GroupDataOP) generateGroupData() {

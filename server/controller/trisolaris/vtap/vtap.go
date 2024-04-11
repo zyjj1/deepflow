@@ -765,6 +765,8 @@ func (v *VTapInfo) generateVTapIP() {
 			EpcId:        proto.Uint32(uint32(cacheVTap.GetVPCID())),
 			Ip:           proto.String(cacheVTap.GetLaunchServer()),
 			PodClusterId: proto.Uint32(uint32(cacheVTap.GetPodClusterID())),
+			TeamId:       proto.Uint32(uint32(cacheVTap.GetTeamID())),
+			OrgId:        proto.Uint32(uint32(v.ORGID)),
 		}
 		vTapIPs = append(vTapIPs, data)
 	}
