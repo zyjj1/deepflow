@@ -426,7 +426,7 @@ func (t *WhereTag) Trans(expr sqlparser.Expr, w *Where, e *CHEngine) (view.Node,
 		}
 		filter := ""
 		switch t.Tag {
-		case "value", "devicetype", "device_type", "tag_name", "field_name", "field_type", "1", "user_id":
+		case "value", "devicetype", "device_type", "tag_name", "field_name", "field_type", "1", "user_id", "team_id":
 			filter = fmt.Sprintf("%s %s %s", t.Tag, op, t.Value)
 		case "type":
 			if table == "vtap_map" {
@@ -515,7 +515,7 @@ func (t *WhereTag) Trans(expr sqlparser.Expr, w *Where, e *CHEngine) (view.Node,
 					}
 					return &view.Expr{Value: filter}, nil
 				}
-			case "ip_resource_map":
+			case "ip_resource_map": // TODO DELETED
 				checkTag := strings.TrimSuffix(t.Tag, "_id")
 				if slices.Contains(chCommon.SHOW_TAG_VALUE_MAP[table], checkTag) {
 					switch checkTag {
