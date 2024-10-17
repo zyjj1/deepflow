@@ -8,6 +8,8 @@
 ### <a id="main"></a>DeepFlow release main
 
 #### Bug Fix
+* fix: remove dynamic libpcap [#8321](https://github.com/deepflowio/deepflow/pull/8321) by [yuanchaoa](https://github.com/yuanchaoa)
+* fix: when EPC is unknown, region should not be unknown [#8315](https://github.com/deepflowio/deepflow/pull/8315) by [lzf575](https://github.com/lzf575)
 * fix: add process_id in profile data query [#8238](https://github.com/deepflowio/deepflow/pull/8238) by [taloric](https://github.com/taloric)
 * fix: custom data source creation failed in enterprise ClickHouse [#8233](https://github.com/deepflowio/deepflow/pull/8233) by [lzf575](https://github.com/lzf575)
 * fix: agent - eBPF Fix the process matcher handling for UPROBE [#8230](https://github.com/deepflowio/deepflow/pull/8230) by [yinjiping](https://github.com/yinjiping)
@@ -211,6 +213,7 @@
 * Fix prometheus data cannot be labeled with universal tags，if slow-decoder is used. [#7100](https://github.com/deepflowio/deepflow/pull/7100)
 
 #### NEW FEATURE
+* feat: sort prometheus export tags [#8328](https://github.com/deepflowio/deepflow/pull/8328) by [lzf575](https://github.com/lzf575)
 * feat: agent - eBPF Adapt 5.10.204-rt100-AD1000-PROTO [#8246](https://github.com/deepflowio/deepflow/pull/8246) by [yinjiping](https://github.com/yinjiping)
 * feat: agent - Add a configuration option to enable go/tls trace [#8244](https://github.com/deepflowio/deepflow/pull/8244) by [yinjiping](https://github.com/yinjiping)
 * feat: agent - eBPF Create maps based on functional configuration [#8243](https://github.com/deepflowio/deepflow/pull/8243) by [yinjiping](https://github.com/yinjiping)
