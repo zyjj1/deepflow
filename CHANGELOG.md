@@ -8,6 +8,7 @@
 ### <a id="main"></a>DeepFlow release main
 
 #### Bug Fix
+* fix: container env supports aggr packets with and without tunnels [#8427](https://github.com/deepflowio/deepflow/pull/8427) by [yuanchaoa](https://github.com/yuanchaoa)
 * fix: add process_id in profile data query [#8238](https://github.com/deepflowio/deepflow/pull/8238) by [taloric](https://github.com/taloric)
 * fix: custom data source creation failed in enterprise ClickHouse [#8233](https://github.com/deepflowio/deepflow/pull/8233) by [lzf575](https://github.com/lzf575)
 * fix: agent - eBPF Fix the process matcher handling for UPROBE [#8230](https://github.com/deepflowio/deepflow/pull/8230) by [yinjiping](https://github.com/yinjiping)
@@ -211,6 +212,7 @@
 * Fix prometheus data cannot be labeled with universal tags，if slow-decoder is used. [#7100](https://github.com/deepflowio/deepflow/pull/7100)
 
 #### NEW FEATURE
+* feat: Change bpf map feat to feat_flags to support multi-function [#8424](https://github.com/deepflowio/deepflow/pull/8424) by [rvql](https://github.com/rvql)
 * feat: agent - eBPF Adapt 5.10.204-rt100-AD1000-PROTO [#8246](https://github.com/deepflowio/deepflow/pull/8246) by [yinjiping](https://github.com/yinjiping)
 * feat: agent - Add a configuration option to enable go/tls trace [#8244](https://github.com/deepflowio/deepflow/pull/8244) by [yinjiping](https://github.com/yinjiping)
 * feat: agent - eBPF Create maps based on functional configuration [#8243](https://github.com/deepflowio/deepflow/pull/8243) by [yinjiping](https://github.com/yinjiping)
@@ -460,6 +462,7 @@
 * refactor: trace_tree add encoding respose statistics [#7430](https://github.com/deepflowio/deepflow/pull/7430) by [lzf575](https://github.com/lzf575)
 
 #### Performance
+* perf: reduce ckwriter memory [#8417](https://github.com/deepflowio/deepflow/pull/8417) by [lzf575](https://github.com/lzf575)
 * perf: remove the '-l' compilation parameter to allow inline [#7935](https://github.com/deepflowio/deepflow/pull/7935) by [lzf575](https://github.com/lzf575)
 * perf: improve the performance of ClickHouse table changes under multiple organizations [#7788](https://github.com/deepflowio/deepflow/pull/7788) by [lzf575](https://github.com/lzf575)
 * perf: speed up the update of ClickHouse table structure [#7748](https://github.com/deepflowio/deepflow/pull/7748) by [lzf575](https://github.com/lzf575)
