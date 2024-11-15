@@ -8,6 +8,7 @@
 ### <a id="main"></a>DeepFlow release main
 
 #### Bug Fix
+* fix: l7_capture_network_types default value [#8501](https://github.com/deepflowio/deepflow/pull/8501) by [rvql](https://github.com/rvql)
 * fix: add process_id in profile data query [#8238](https://github.com/deepflowio/deepflow/pull/8238) by [taloric](https://github.com/taloric)
 * fix: custom data source creation failed in enterprise ClickHouse [#8233](https://github.com/deepflowio/deepflow/pull/8233) by [lzf575](https://github.com/lzf575)
 * fix: agent - eBPF Fix the process matcher handling for UPROBE [#8230](https://github.com/deepflowio/deepflow/pull/8230) by [yinjiping](https://github.com/yinjiping)
