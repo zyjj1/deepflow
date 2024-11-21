@@ -8,6 +8,8 @@
 ### <a id="main"></a>DeepFlow release main
 
 #### Bug Fix
+* fix: eBPF SELinux permission-related exit [#8534](https://github.com/deepflowio/deepflow/pull/8534) by [yinjiping](https://github.com/yinjiping)
+* fix: failed to downgrade agent_group_configuration [#8520](https://github.com/deepflowio/deepflow/pull/8520) by [ZhengYa-0110](https://github.com/ZhengYa-0110)
 * fix: add process_id in profile data query [#8238](https://github.com/deepflowio/deepflow/pull/8238) by [taloric](https://github.com/taloric)
 * fix: custom data source creation failed in enterprise ClickHouse [#8233](https://github.com/deepflowio/deepflow/pull/8233) by [lzf575](https://github.com/lzf575)
 * fix: agent - eBPF Fix the process matcher handling for UPROBE [#8230](https://github.com/deepflowio/deepflow/pull/8230) by [yinjiping](https://github.com/yinjiping)
@@ -211,6 +213,9 @@
 * Fix prometheus data cannot be labeled with universal tags，if slow-decoder is used. [#7100](https://github.com/deepflowio/deepflow/pull/7100)
 
 #### NEW FEATURE
+* feat: Add offset in IoEvent [#8532](https://github.com/deepflowio/deepflow/pull/8532) by [rvql](https://github.com/rvql)
+* feat: Change consts for offcpu dwarf/python unwind [#8525](https://github.com/deepflowio/deepflow/pull/8525) by [rvql](https://github.com/rvql)
+* feat: agent - eBPF Add file offset for io r/w events [#8514](https://github.com/deepflowio/deepflow/pull/8514) by [yinjiping](https://github.com/yinjiping)
 * feat: agent - eBPF Adapt 5.10.204-rt100-AD1000-PROTO [#8246](https://github.com/deepflowio/deepflow/pull/8246) by [yinjiping](https://github.com/yinjiping)
 * feat: agent - Add a configuration option to enable go/tls trace [#8244](https://github.com/deepflowio/deepflow/pull/8244) by [yinjiping](https://github.com/yinjiping)
 * feat: agent - eBPF Create maps based on functional configuration [#8243](https://github.com/deepflowio/deepflow/pull/8243) by [yinjiping](https://github.com/yinjiping)
