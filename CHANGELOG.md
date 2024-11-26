@@ -211,6 +211,11 @@
 * Fix prometheus data cannot be labeled with universal tags，if slow-decoder is used. [#7100](https://github.com/deepflowio/deepflow/pull/7100)
 
 #### NEW FEATURE
+* feat: support dd integration [#8538](https://github.com/deepflowio/deepflow/pull/8538) by [taloric](https://github.com/taloric)
+* feature: modifies to new agent-group config api in cli [#8530](https://github.com/deepflowio/deepflow/pull/8530) by [ZhengYa-0110](https://github.com/ZhengYa-0110)
+* feat: cloud delete exclude region [#8519](https://github.com/deepflowio/deepflow/pull/8519) by [askyrie](https://github.com/askyrie)
+* feat: querier support language parameter [#8503](https://github.com/deepflowio/deepflow/pull/8503) by [xiaochaoren1](https://github.com/xiaochaoren1)
+* feat: support collecting dpdk packets through eBPF [#8499](https://github.com/deepflowio/deepflow/pull/8499) by [yuanchaoa](https://github.com/yuanchaoa)
 * feat: agent - eBPF Adapt 5.10.204-rt100-AD1000-PROTO [#8246](https://github.com/deepflowio/deepflow/pull/8246) by [yinjiping](https://github.com/yinjiping)
 * feat: agent - Add a configuration option to enable go/tls trace [#8244](https://github.com/deepflowio/deepflow/pull/8244) by [yinjiping](https://github.com/yinjiping)
 * feat: agent - eBPF Create maps based on functional configuration [#8243](https://github.com/deepflowio/deepflow/pull/8243) by [yinjiping](https://github.com/yinjiping)
@@ -428,6 +433,8 @@
 * feat: server directly reports metrics of load1_by_cpu_num that can be used for alert [#7088](https://github.com/deepflowio/deepflow/pull/7088) by [lzf575](https://github.com/lzf575)
 
 #### Refactoring
+* refactor: update sonic #8553 [#8558](https://github.com/deepflowio/deepflow/pull/8558) by [lzf575](https://github.com/lzf575)
+* refactor: Byconity not support create 1h,1d aggr tables [#8556](https://github.com/deepflowio/deepflow/pull/8556) by [lzf575](https://github.com/lzf575)
 * refactor: agent workspace dependencies [#8208](https://github.com/deepflowio/deepflow/pull/8208) by [TomatoMr](https://github.com/TomatoMr)
 * refactor: agent is compatibles with configuration and interfaces of both old and new versions [#8084](https://github.com/deepflowio/deepflow/pull/8084) by [TomatoMr](https://github.com/TomatoMr)
 * refactor: agent adds the 'disabled-cgroups' configuration. [#8164](https://github.com/deepflowio/deepflow/pull/8164) by [TomatoMr](https://github.com/TomatoMr)
