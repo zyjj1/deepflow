@@ -8,6 +8,9 @@
 ### <a id="main"></a>DeepFlow release main
 
 #### Bug Fix
+* fix: Agent config change TODOs vol.3 [#8616](https://github.com/deepflowio/deepflow/pull/8616) by [rvql](https://github.com/rvql)
+* fix: Agent config change TODOs vol.2 [#8604](https://github.com/deepflowio/deepflow/pull/8604) by [rvql](https://github.com/rvql)
+* fix: bpf does not take effect in analyzer mode [#8603](https://github.com/deepflowio/deepflow/pull/8603) by [yuanchaoa](https://github.com/yuanchaoa)
 * fix: add process_id in profile data query [#8238](https://github.com/deepflowio/deepflow/pull/8238) by [taloric](https://github.com/taloric)
 * fix: custom data source creation failed in enterprise ClickHouse [#8233](https://github.com/deepflowio/deepflow/pull/8233) by [lzf575](https://github.com/lzf575)
 * fix: agent - eBPF Fix the process matcher handling for UPROBE [#8230](https://github.com/deepflowio/deepflow/pull/8230) by [yinjiping](https://github.com/yinjiping)
@@ -211,6 +214,7 @@
 * Fix prometheus data cannot be labeled with universal tags，if slow-decoder is used. [#7100](https://github.com/deepflowio/deepflow/pull/7100)
 
 #### NEW FEATURE
+* feat: supports creating 1h, 1d aggregate data source when using ByConity [#8614](https://github.com/deepflowio/deepflow/pull/8614) by [lzf575](https://github.com/lzf575)
 * feat: agent - eBPF Adapt 5.10.204-rt100-AD1000-PROTO [#8246](https://github.com/deepflowio/deepflow/pull/8246) by [yinjiping](https://github.com/yinjiping)
 * feat: agent - Add a configuration option to enable go/tls trace [#8244](https://github.com/deepflowio/deepflow/pull/8244) by [yinjiping](https://github.com/yinjiping)
 * feat: agent - eBPF Create maps based on functional configuration [#8243](https://github.com/deepflowio/deepflow/pull/8243) by [yinjiping](https://github.com/yinjiping)
