@@ -268,6 +268,8 @@
 * Fix prometheus data cannot be labeled with universal tags，if slow-decoder is used. [#7100](https://github.com/deepflowio/deepflow/pull/7100)
 
 #### NEW FEATURE
+* feat agent - eBPF Add DPDK statistics and update configuration [#8805](https://github.com/deepflowio/deepflow/pull/8805) by [yinjiping](https://github.com/yinjiping)
+* feat: agent - eBPF Adapt to TENCENT 5.4.119-19-0008.aarch64 [#8804](https://github.com/deepflowio/deepflow/pull/8804) by [yinjiping](https://github.com/yinjiping)
 * feat: adds health check warning [#8726](https://github.com/deepflowio/deepflow/pull/8726) by [ZhengYa-0110](https://github.com/ZhengYa-0110)
 * feat: deprecated ipvlan [#8723](https://github.com/deepflowio/deepflow/pull/8723) by [askyrie](https://github.com/askyrie)
 * feat: gets by page when refreshing recorder cache [#8709](https://github.com/deepflowio/deepflow/pull/8709) by [ZhengYa-0110](https://github.com/ZhengYa-0110)
