@@ -8,6 +8,7 @@
 ### <a id="main"></a>DeepFlow release main
 
 #### Bug Fix
+* fix: compilation error [#8845](https://github.com/deepflowio/deepflow/pull/8845) by [yuanchaoa](https://github.com/yuanchaoa)
 * fix: failed to create agent group config using yaml [#8731](https://github.com/deepflowio/deepflow/pull/8731) by [ZhengYa-0110](https://github.com/ZhengYa-0110)
 * fix: the analyzer mode supports ebpf dpdk [#8721](https://github.com/deepflowio/deepflow/pull/8721) by [yuanchaoa](https://github.com/yuanchaoa)
 * fix: Configuration text [#8701](https://github.com/deepflowio/deepflow/pull/8701) by [rvql](https://github.com/rvql)
@@ -268,6 +269,10 @@
 * Fix prometheus data cannot be labeled with universal tags，if slow-decoder is used. [#7100](https://github.com/deepflowio/deepflow/pull/7100)
 
 #### NEW FEATURE
+* feat: refactors metadb migration [#8847](https://github.com/deepflowio/deepflow/pull/8847) by [ZhengYa-0110](https://github.com/ZhengYa-0110)
+* feat: querier prometheus use cache by config [#8844](https://github.com/deepflowio/deepflow/pull/8844) by [xiaochaoren1](https://github.com/xiaochaoren1)
+* feat: support decap gre [#8837](https://github.com/deepflowio/deepflow/pull/8837) by [yuanchaoa](https://github.com/yuanchaoa)
+* feat: supports postgres in migration [#8836](https://github.com/deepflowio/deepflow/pull/8836) by [ZhengYa-0110](https://github.com/ZhengYa-0110)
 * feat: adds health check warning [#8726](https://github.com/deepflowio/deepflow/pull/8726) by [ZhengYa-0110](https://github.com/ZhengYa-0110)
 * feat: deprecated ipvlan [#8723](https://github.com/deepflowio/deepflow/pull/8723) by [askyrie](https://github.com/askyrie)
 * feat: gets by page when refreshing recorder cache [#8709](https://github.com/deepflowio/deepflow/pull/8709) by [ZhengYa-0110](https://github.com/ZhengYa-0110)
