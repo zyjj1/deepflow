@@ -8,6 +8,7 @@
 ### <a id="main"></a>DeepFlow release main
 
 #### Bug Fix
+* fix: querier show subnet error when subnet filtering [#8920](https://github.com/deepflowio/deepflow/pull/8920) by [xiaochaoren1](https://github.com/xiaochaoren1)
 * fix: failed to create agent group config using yaml [#8731](https://github.com/deepflowio/deepflow/pull/8731) by [ZhengYa-0110](https://github.com/ZhengYa-0110)
 * fix: the analyzer mode supports ebpf dpdk [#8721](https://github.com/deepflowio/deepflow/pull/8721) by [yuanchaoa](https://github.com/yuanchaoa)
 * fix: Configuration text [#8701](https://github.com/deepflowio/deepflow/pull/8701) by [rvql](https://github.com/rvql)
@@ -268,6 +269,10 @@
 * Fix prometheus data cannot be labeled with universal tags，if slow-decoder is used. [#7100](https://github.com/deepflowio/deepflow/pull/7100)
 
 #### NEW FEATURE
+* feat: support decap special vxlan [#8925](https://github.com/deepflowio/deepflow/pull/8925) by [yuanchaoa](https://github.com/yuanchaoa)
+* feat: agent - Update protocol_inference.h [#8919](https://github.com/deepflowio/deepflow/pull/8919) by [yinjiping](https://github.com/yinjiping)
+* feat: agent - eBPF Remove user process restrictions in the profile [#8917](https://github.com/deepflowio/deepflow/pull/8917) by [yinjiping](https://github.com/yinjiping)
+* feat: support ebpf for rocketmq protocol [#8901](https://github.com/deepflowio/deepflow/pull/8901) by [kylewanginchina](https://github.com/kylewanginchina)
 * feat: adds health check warning [#8726](https://github.com/deepflowio/deepflow/pull/8726) by [ZhengYa-0110](https://github.com/ZhengYa-0110)
 * feat: deprecated ipvlan [#8723](https://github.com/deepflowio/deepflow/pull/8723) by [askyrie](https://github.com/askyrie)
 * feat: gets by page when refreshing recorder cache [#8709](https://github.com/deepflowio/deepflow/pull/8709) by [ZhengYa-0110](https://github.com/ZhengYa-0110)
@@ -533,6 +538,7 @@
 * feat: server directly reports metrics of load1_by_cpu_num that can be used for alert [#7088](https://github.com/deepflowio/deepflow/pull/7088) by [lzf575](https://github.com/lzf575)
 
 #### Refactoring
+* refactor: rename cloud server to cloud host [#8926](https://github.com/deepflowio/deepflow/pull/8926) by [lzf575](https://github.com/lzf575)
 * refactor: Remove legacy agent config [#8586](https://github.com/deepflowio/deepflow/pull/8586) by [rvql](https://github.com/rvql)
 * refactor: modify log of configuration changes [#8258](https://github.com/deepflowio/deepflow/pull/8258) by [yuanchaoa](https://github.com/yuanchaoa)
 * refactor: agent workspace dependencies [#8208](https://github.com/deepflowio/deepflow/pull/8208) by [TomatoMr](https://github.com/TomatoMr)
