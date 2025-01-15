@@ -8,6 +8,7 @@
 ### <a id="main"></a>DeepFlow release main
 
 #### Bug Fix
+* fix: The process matcher is missing kernel processes [#8935](https://github.com/deepflowio/deepflow/pull/8935) by [yuanchaoa](https://github.com/yuanchaoa)
 * fix: failed to create agent group config using yaml [#8731](https://github.com/deepflowio/deepflow/pull/8731) by [ZhengYa-0110](https://github.com/ZhengYa-0110)
 * fix: the analyzer mode supports ebpf dpdk [#8721](https://github.com/deepflowio/deepflow/pull/8721) by [yuanchaoa](https://github.com/yuanchaoa)
 * fix: Configuration text [#8701](https://github.com/deepflowio/deepflow/pull/8701) by [rvql](https://github.com/rvql)
@@ -268,6 +269,10 @@
 * Fix prometheus data cannot be labeled with universal tags，if slow-decoder is used. [#7100](https://github.com/deepflowio/deepflow/pull/7100)
 
 #### NEW FEATURE
+* feat: querier optimize dynamic metrics [#8939](https://github.com/deepflowio/deepflow/pull/8939) by [xiaochaoren1](https://github.com/xiaochaoren1)
+* feat: agent - eBPF Adjust Profile MAP Recycling Log Level [#8937](https://github.com/deepflowio/deepflow/pull/8937) by [yinjiping](https://github.com/yinjiping)
+* feat: Support agent max socket limit [#8932](https://github.com/deepflowio/deepflow/pull/8932) by [rvql](https://github.com/rvql)
+* feat: supports db initialization in postgres [#8913](https://github.com/deepflowio/deepflow/pull/8913) by [ZhengYa-0110](https://github.com/ZhengYa-0110)
 * feat: adds health check warning [#8726](https://github.com/deepflowio/deepflow/pull/8726) by [ZhengYa-0110](https://github.com/ZhengYa-0110)
 * feat: deprecated ipvlan [#8723](https://github.com/deepflowio/deepflow/pull/8723) by [askyrie](https://github.com/askyrie)
 * feat: gets by page when refreshing recorder cache [#8709](https://github.com/deepflowio/deepflow/pull/8709) by [ZhengYa-0110](https://github.com/ZhengYa-0110)
