@@ -8,6 +8,11 @@
 ### <a id="main"></a>DeepFlow release main
 
 #### Bug Fix
+* fix: Memory profile memory leak [#8985](https://github.com/deepflowio/deepflow/pull/8985) by [rvql](https://github.com/rvql)
+* fix: query skywalking data update resource info [#8981](https://github.com/deepflowio/deepflow/pull/8981) by [taloric](https://github.com/taloric)
+* fix: invalid api response type [#8979](https://github.com/deepflowio/deepflow/pull/8979) by [ZhengYa-0110](https://github.com/ZhengYa-0110)
+* fix: ignoring the query result in ByConity cause a failure [#8977](https://github.com/deepflowio/deepflow/pull/8977) by [lzf575](https://github.com/lzf575)
+* fix: ignoring the query result in ByConity cause a failure [#8974](https://github.com/deepflowio/deepflow/pull/8974) by [lzf575](https://github.com/lzf575)
 * fix: failed to create agent group config using yaml [#8731](https://github.com/deepflowio/deepflow/pull/8731) by [ZhengYa-0110](https://github.com/ZhengYa-0110)
 * fix: the analyzer mode supports ebpf dpdk [#8721](https://github.com/deepflowio/deepflow/pull/8721) by [yuanchaoa](https://github.com/yuanchaoa)
 * fix: Configuration text [#8701](https://github.com/deepflowio/deepflow/pull/8701) by [rvql](https://github.com/rvql)
@@ -268,6 +273,8 @@
 * Fix prometheus data cannot be labeled with universal tags，if slow-decoder is used. [#7100](https://github.com/deepflowio/deepflow/pull/7100)
 
 #### NEW FEATURE
+* feat: querier add timeout_ratio [#8973](https://github.com/deepflowio/deepflow/pull/8973) by [xiaochaoren1](https://github.com/xiaochaoren1)
+* feat: support vtap_group_ids in npb_policy [#8966](https://github.com/deepflowio/deepflow/pull/8966) by [SongZhen0704](https://github.com/SongZhen0704)
 * feat: adds health check warning [#8726](https://github.com/deepflowio/deepflow/pull/8726) by [ZhengYa-0110](https://github.com/ZhengYa-0110)
 * feat: deprecated ipvlan [#8723](https://github.com/deepflowio/deepflow/pull/8723) by [askyrie](https://github.com/askyrie)
 * feat: gets by page when refreshing recorder cache [#8709](https://github.com/deepflowio/deepflow/pull/8709) by [ZhengYa-0110](https://github.com/ZhengYa-0110)
