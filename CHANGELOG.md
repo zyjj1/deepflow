@@ -8,6 +8,9 @@
 ### <a id="main"></a>DeepFlow release main
 
 #### Bug Fix
+* feat: fixes metadb issu procedure error [#9056](https://github.com/deepflowio/deepflow/pull/9056) by [ZhengYa-0110](https://github.com/ZhengYa-0110)
+* fix: Agent api_watcher not starting when disabled [#9047](https://github.com/deepflowio/deepflow/pull/9047) by [rvql](https://github.com/rvql)
+* fix: [cli] compilation error #8553 [#9043](https://github.com/deepflowio/deepflow/pull/9043) by [SongZhen0704](https://github.com/SongZhen0704)
 * fix: failed to create agent group config using yaml [#8731](https://github.com/deepflowio/deepflow/pull/8731) by [ZhengYa-0110](https://github.com/ZhengYa-0110)
 * fix: the analyzer mode supports ebpf dpdk [#8721](https://github.com/deepflowio/deepflow/pull/8721) by [yuanchaoa](https://github.com/yuanchaoa)
 * fix: Configuration text [#8701](https://github.com/deepflowio/deepflow/pull/8701) by [rvql](https://github.com/rvql)
@@ -268,6 +271,8 @@
 * Fix prometheus data cannot be labeled with universal tags，if slow-decoder is used. [#7100](https://github.com/deepflowio/deepflow/pull/7100)
 
 #### NEW FEATURE
+* feat: adds epc_id to vinterface table [#9033](https://github.com/deepflowio/deepflow/pull/9033) by [ZhengYa-0110](https://github.com/ZhengYa-0110)
+* feat: genesis delete invalid code [#8855](https://github.com/deepflowio/deepflow/pull/8855) by [askyrie](https://github.com/askyrie)
 * feat: adds health check warning [#8726](https://github.com/deepflowio/deepflow/pull/8726) by [ZhengYa-0110](https://github.com/ZhengYa-0110)
 * feat: deprecated ipvlan [#8723](https://github.com/deepflowio/deepflow/pull/8723) by [askyrie](https://github.com/askyrie)
 * feat: gets by page when refreshing recorder cache [#8709](https://github.com/deepflowio/deepflow/pull/8709) by [ZhengYa-0110](https://github.com/ZhengYa-0110)
