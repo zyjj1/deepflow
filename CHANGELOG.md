@@ -8,6 +8,8 @@
 ### <a id="main"></a>DeepFlow release main
 
 #### Bug Fix
+* fix: vtap-interfaces api responses wrong host info [#9061](https://github.com/deepflowio/deepflow/pull/9061) by [ZhengYa-0110](https://github.com/ZhengYa-0110)
+* fix: trisolaris update expected_revision [#9059](https://github.com/deepflowio/deepflow/pull/9059) by [askyrie](https://github.com/askyrie)
 * fix: failed to create agent group config using yaml [#8731](https://github.com/deepflowio/deepflow/pull/8731) by [ZhengYa-0110](https://github.com/ZhengYa-0110)
 * fix: the analyzer mode supports ebpf dpdk [#8721](https://github.com/deepflowio/deepflow/pull/8721) by [yuanchaoa](https://github.com/yuanchaoa)
 * fix: Configuration text [#8701](https://github.com/deepflowio/deepflow/pull/8701) by [rvql](https://github.com/rvql)
@@ -268,6 +270,8 @@
 * Fix prometheus data cannot be labeled with universal tags，if slow-decoder is used. [#7100](https://github.com/deepflowio/deepflow/pull/7100)
 
 #### NEW FEATURE
+* feat: support rfc 6598 [#9062](https://github.com/deepflowio/deepflow/pull/9062) by [yuanchaoa](https://github.com/yuanchaoa)
+* feat: [controller & cli] support cancel agent upgrade [#9054](https://github.com/deepflowio/deepflow/pull/9054) by [SongZhen0704](https://github.com/SongZhen0704)
 * feat: adds health check warning [#8726](https://github.com/deepflowio/deepflow/pull/8726) by [ZhengYa-0110](https://github.com/ZhengYa-0110)
 * feat: deprecated ipvlan [#8723](https://github.com/deepflowio/deepflow/pull/8723) by [askyrie](https://github.com/askyrie)
 * feat: gets by page when refreshing recorder cache [#8709](https://github.com/deepflowio/deepflow/pull/8709) by [ZhengYa-0110](https://github.com/ZhengYa-0110)
