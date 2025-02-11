@@ -268,6 +268,9 @@
 * Fix prometheus data cannot be labeled with universal tags，if slow-decoder is used. [#7100](https://github.com/deepflowio/deepflow/pull/7100)
 
 #### NEW FEATURE
+* feat: agent check add cache debug [#9078](https://github.com/deepflowio/deepflow/pull/9078) by [askyrie](https://github.com/askyrie)
+* feat: remove non-empty filtering of host grouping [#9075](https://github.com/deepflowio/deepflow/pull/9075) by [xiaochaoren1](https://github.com/xiaochaoren1)
+* feat: add cloud common for fc [#8959](https://github.com/deepflowio/deepflow/pull/8959) by [askyrie](https://github.com/askyrie)
 * feat: adds health check warning [#8726](https://github.com/deepflowio/deepflow/pull/8726) by [ZhengYa-0110](https://github.com/ZhengYa-0110)
 * feat: deprecated ipvlan [#8723](https://github.com/deepflowio/deepflow/pull/8723) by [askyrie](https://github.com/askyrie)
 * feat: gets by page when refreshing recorder cache [#8709](https://github.com/deepflowio/deepflow/pull/8709) by [ZhengYa-0110](https://github.com/ZhengYa-0110)
@@ -592,6 +595,7 @@
 * chore: update cli dependencies [#7249](https://github.com/deepflowio/deepflow/pull/7249) by [lzf575](https://github.com/lzf575)
 
 #### OTHER
+* add vector config examples [#9067](https://github.com/deepflowio/deepflow/pull/9067) by [taloric](https://github.com/taloric)
 * add ci to clear stale branch [#8149](https://github.com/deepflowio/deepflow/pull/8149) by [jiumos](https://github.com/jiumos)
 * failed to create tables in ByConity database under non-default organization [#8148](https://github.com/deepflowio/deepflow/pull/8148) by [lzf575](https://github.com/lzf575)
 * Update typo in comments [#8127](https://github.com/deepflowio/deepflow/pull/8127) by [Hyzhou](https://github.com/Hyzhou)
