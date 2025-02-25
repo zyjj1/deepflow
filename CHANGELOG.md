@@ -8,6 +8,13 @@
 ### <a id="main"></a>DeepFlow release main
 
 #### Bug Fix
+* fix: agent - eBPF Profile Set podid for Total processes [#9189](https://github.com/deepflowio/deepflow/pull/9189) by [yinjiping](https://github.com/yinjiping)
+* fix: agent build ci [#9185](https://github.com/deepflowio/deepflow/pull/9185) by [jiumos](https://github.com/jiumos)
+* fix: Fix the logic of exporting fields using tag.Name [#9181](https://github.com/deepflowio/deepflow/pull/9181) by [pegasusljn](https://github.com/pegasusljn)
+* fix: write panic [#9176](https://github.com/deepflowio/deepflow/pull/9176) by [lzf575](https://github.com/lzf575)
+* fix: refine condition logic for  in the [#9174](https://github.com/deepflowio/deepflow/pull/9174) by [pegasusljn](https://github.com/pegasusljn)
+* fix: enum filter error when db is prometheus [#9171](https://github.com/deepflowio/deepflow/pull/9171) by [xiaochaoren1](https://github.com/xiaochaoren1)
+* fix: add automatic custom tag icon_id grouping [#9155](https://github.com/deepflowio/deepflow/pull/9155) by [xiaochaoren1](https://github.com/xiaochaoren1)
 * fix: failed to create agent group config using yaml [#8731](https://github.com/deepflowio/deepflow/pull/8731) by [ZhengYa-0110](https://github.com/ZhengYa-0110)
 * fix: the analyzer mode supports ebpf dpdk [#8721](https://github.com/deepflowio/deepflow/pull/8721) by [yuanchaoa](https://github.com/yuanchaoa)
 * fix: Configuration text [#8701](https://github.com/deepflowio/deepflow/pull/8701) by [rvql](https://github.com/rvql)
@@ -268,6 +275,8 @@
 * Fix prometheus data cannot be labeled with universal tags，if slow-decoder is used. [#7100](https://github.com/deepflowio/deepflow/pull/7100)
 
 #### NEW FEATURE
+* feat: modify generate vpc uid rule [#9187](https://github.com/deepflowio/deepflow/pull/9187) by [SongZhen0704](https://github.com/SongZhen0704)
+* feat: refactors resource event [#9121](https://github.com/deepflowio/deepflow/pull/9121) by [ZhengYa-0110](https://github.com/ZhengYa-0110)
 * feat: adds health check warning [#8726](https://github.com/deepflowio/deepflow/pull/8726) by [ZhengYa-0110](https://github.com/ZhengYa-0110)
 * feat: deprecated ipvlan [#8723](https://github.com/deepflowio/deepflow/pull/8723) by [askyrie](https://github.com/askyrie)
 * feat: gets by page when refreshing recorder cache [#8709](https://github.com/deepflowio/deepflow/pull/8709) by [ZhengYa-0110](https://github.com/ZhengYa-0110)
