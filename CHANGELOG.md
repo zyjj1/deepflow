@@ -268,6 +268,7 @@
 * Fix prometheus data cannot be labeled with universal tags，if slow-decoder is used. [#7100](https://github.com/deepflowio/deepflow/pull/7100)
 
 #### NEW FEATURE
+* feat: support more type filter in data_source api [#9315](https://github.com/deepflowio/deepflow/pull/9315) by [SongZhen0704](https://github.com/SongZhen0704)
 * feat: adds health check warning [#8726](https://github.com/deepflowio/deepflow/pull/8726) by [ZhengYa-0110](https://github.com/ZhengYa-0110)
 * feat: deprecated ipvlan [#8723](https://github.com/deepflowio/deepflow/pull/8723) by [askyrie](https://github.com/askyrie)
 * feat: gets by page when refreshing recorder cache [#8709](https://github.com/deepflowio/deepflow/pull/8709) by [ZhengYa-0110](https://github.com/ZhengYa-0110)
