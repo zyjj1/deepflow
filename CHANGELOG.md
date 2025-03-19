@@ -8,6 +8,7 @@
 ### <a id="main"></a>DeepFlow release main
 
 #### Bug Fix
+* fix: meta_packet.policy is none [#9325](https://github.com/deepflowio/deepflow/pull/9325) by [yuanchaoa](https://github.com/yuanchaoa)
 * fix: failed to create agent group config using yaml [#8731](https://github.com/deepflowio/deepflow/pull/8731) by [ZhengYa-0110](https://github.com/ZhengYa-0110)
 * fix: the analyzer mode supports ebpf dpdk [#8721](https://github.com/deepflowio/deepflow/pull/8721) by [yuanchaoa](https://github.com/yuanchaoa)
 * fix: Configuration text [#8701](https://github.com/deepflowio/deepflow/pull/8701) by [rvql](https://github.com/rvql)
@@ -268,6 +269,8 @@
 * Fix prometheus data cannot be labeled with universal tags，if slow-decoder is used. [#7100](https://github.com/deepflowio/deepflow/pull/7100)
 
 #### NEW FEATURE
+* feat: agent - eBPF Supports linux 4.12 [#9318](https://github.com/deepflowio/deepflow/pull/9318) by [yinjiping](https://github.com/yinjiping)
+* feat: support enable/disable sub_domain [#9317](https://github.com/deepflowio/deepflow/pull/9317) by [SongZhen0704](https://github.com/SongZhen0704)
 * feat: adds health check warning [#8726](https://github.com/deepflowio/deepflow/pull/8726) by [ZhengYa-0110](https://github.com/ZhengYa-0110)
 * feat: deprecated ipvlan [#8723](https://github.com/deepflowio/deepflow/pull/8723) by [askyrie](https://github.com/askyrie)
 * feat: gets by page when refreshing recorder cache [#8709](https://github.com/deepflowio/deepflow/pull/8709) by [ZhengYa-0110](https://github.com/ZhengYa-0110)
