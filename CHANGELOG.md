@@ -8,6 +8,7 @@
 ### <a id="main"></a>DeepFlow release main
 
 #### Bug Fix
+* fix: agent - eBPF Add tracepoint recvmmsg for kfunc bytecode [#9610](https://github.com/deepflowio/deepflow/pull/9610) by [yinjiping](https://github.com/yinjiping)
 * fix: agnet - eBPF Fix the kernel kick on CPU0 was not triggered [#8817](https://github.com/deepflowio/deepflow/pull/8817) by [yinjiping](https://github.com/yinjiping)
 * fix: agent - eBPF Fix Crashes Caused by Packet Count Statistics [#8816](https://github.com/deepflowio/deepflow/pull/8816) by [yinjiping](https://github.com/yinjiping)
 * fix: wan type cidr may not be tagged [#8814](https://github.com/deepflowio/deepflow/pull/8814) by [lzf575](https://github.com/lzf575)
@@ -276,6 +277,12 @@
 * Fix prometheus data cannot be labeled with universal tags，if slow-decoder is used. [#7100](https://github.com/deepflowio/deepflow/pull/7100)
 
 #### NEW FEATURE
+* feat: Add k8s ca md5sum in sync message [#9605](https://github.com/deepflowio/deepflow/pull/9605) by [rvql](https://github.com/rvql)
+* feat: support compress l4/l7 flow log message [#9604](https://github.com/deepflowio/deepflow/pull/9604) by [lzf575](https://github.com/lzf575)
+* feat: Support truncated mysql message [#9603](https://github.com/deepflowio/deepflow/pull/9603) by [rvql](https://github.com/rvql)
+* feat: sync request add field [#9602](https://github.com/deepflowio/deepflow/pull/9602) by [askyrie](https://github.com/askyrie)
+* feat: agnet - eBPF Support pure Kprobe/Kretprobe type probing [#9593](https://github.com/deepflowio/deepflow/pull/9593) by [yinjiping](https://github.com/yinjiping)
+* feat: adds license check [#9548](https://github.com/deepflowio/deepflow/pull/9548) by [ZhengYa-0110](https://github.com/ZhengYa-0110)
 * feat: agent - eBPF Add a Musl flag option (#9022) [#9024](https://github.com/deepflowio/deepflow/pull/9024) by [yinjiping](https://github.com/yinjiping)
 * feat: updatae tunnel decap feature [#9021](https://github.com/deepflowio/deepflow/pull/9021) by [yuanchaoa](https://github.com/yuanchaoa)
 * feat: agent - eBPF Adaptation for TLinux 4.14.105-19-0019 [#9013](https://github.com/deepflowio/deepflow/pull/9013) by [yinjiping](https://github.com/yinjiping)
