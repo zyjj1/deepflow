@@ -8,6 +8,10 @@
 ### <a id="main"></a>DeepFlow release main
 
 #### Bug Fix
+* fix: auto group slimit error [#9641](https://github.com/deepflowio/deepflow/pull/9641) by [xiaochaoren1](https://github.com/xiaochaoren1)
+* fix: close ckwriter cause panic [#9640](https://github.com/deepflowio/deepflow/pull/9640) by [lzf575](https://github.com/lzf575)
+* fix: owner vtap no license func [#9637](https://github.com/deepflowio/deepflow/pull/9637) by [askyrie](https://github.com/askyrie)
+* fix: modify metrics calculation logic [#9628](https://github.com/deepflowio/deepflow/pull/9628) by [xiaochaoren1](https://github.com/xiaochaoren1)
 * fix: agnet - eBPF Fix the kernel kick on CPU0 was not triggered [#8817](https://github.com/deepflowio/deepflow/pull/8817) by [yinjiping](https://github.com/yinjiping)
 * fix: agent - eBPF Fix Crashes Caused by Packet Count Statistics [#8816](https://github.com/deepflowio/deepflow/pull/8816) by [yinjiping](https://github.com/yinjiping)
 * fix: wan type cidr may not be tagged [#8814](https://github.com/deepflowio/deepflow/pull/8814) by [lzf575](https://github.com/lzf575)
