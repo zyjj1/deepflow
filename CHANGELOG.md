@@ -8,6 +8,9 @@
 ### <a id="main"></a>DeepFlow release main
 
 #### Bug Fix
+* fix: Multi ns packet capture and socket sync [#9955](https://github.com/deepflowio/deepflow/pull/9955) by [rvql](https://github.com/rvql)
+* fix: matching service, no VPC verification first [#9950](https://github.com/deepflowio/deepflow/pull/9950) by [lzf575](https://github.com/lzf575)
+* fix: incorrect l7 ebpf packet size [#9945](https://github.com/deepflowio/deepflow/pull/9945) by [yuanchaoa](https://github.com/yuanchaoa)
 * fix: agnet - eBPF Fix the kernel kick on CPU0 was not triggered [#8817](https://github.com/deepflowio/deepflow/pull/8817) by [yinjiping](https://github.com/yinjiping)
 * fix: agent - eBPF Fix Crashes Caused by Packet Count Statistics [#8816](https://github.com/deepflowio/deepflow/pull/8816) by [yinjiping](https://github.com/yinjiping)
 * fix: wan type cidr may not be tagged [#8814](https://github.com/deepflowio/deepflow/pull/8814) by [lzf575](https://github.com/lzf575)
