@@ -8,6 +8,10 @@
 ### <a id="main"></a>DeepFlow release main
 
 #### Bug Fix
+* fix: agent is restarted when vpc is 0 [#9992](https://github.com/deepflowio/deepflow/pull/9992) by [yuanchaoa](https://github.com/yuanchaoa)
+* fix: responses gid to gpid-agent-request [#9990](https://github.com/deepflowio/deepflow/pull/9990) by [ZhengYa-0110](https://github.com/ZhengYa-0110)
+* fix: incorrect log_retention [#9986](https://github.com/deepflowio/deepflow/pull/9986) by [yuanchaoa](https://github.com/yuanchaoa)
+* fix: the OOM caused by enabling uprobe [#9982](https://github.com/deepflowio/deepflow/pull/9982) by [yuanchaoa](https://github.com/yuanchaoa)
 * fix: agnet - eBPF Fix the kernel kick on CPU0 was not triggered [#8817](https://github.com/deepflowio/deepflow/pull/8817) by [yinjiping](https://github.com/yinjiping)
 * fix: agent - eBPF Fix Crashes Caused by Packet Count Statistics [#8816](https://github.com/deepflowio/deepflow/pull/8816) by [yinjiping](https://github.com/yinjiping)
 * fix: wan type cidr may not be tagged [#8814](https://github.com/deepflowio/deepflow/pull/8814) by [lzf575](https://github.com/lzf575)
@@ -276,6 +280,7 @@
 * Fix prometheus data cannot be labeled with universal tags，if slow-decoder is used. [#7100](https://github.com/deepflowio/deepflow/pull/7100)
 
 #### NEW FEATURE
+* feat: host concatenated with port support ipv6 [#9930](https://github.com/deepflowio/deepflow/pull/9930) by [askyrie](https://github.com/askyrie)
 * feat: agent - eBPF Add a Musl flag option (#9022) [#9024](https://github.com/deepflowio/deepflow/pull/9024) by [yinjiping](https://github.com/yinjiping)
 * feat: updatae tunnel decap feature [#9021](https://github.com/deepflowio/deepflow/pull/9021) by [yuanchaoa](https://github.com/yuanchaoa)
 * feat: agent - eBPF Adaptation for TLinux 4.14.105-19-0019 [#9013](https://github.com/deepflowio/deepflow/pull/9013) by [yinjiping](https://github.com/yinjiping)
