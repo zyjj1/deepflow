@@ -8,6 +8,11 @@
 ### <a id="main"></a>DeepFlow release main
 
 #### Bug Fix
+* fix: remote agent cmd concurrent panic [#10075](https://github.com/deepflowio/deepflow/pull/10075) by [ZhengYa-0110](https://github.com/ZhengYa-0110)
+* fix: Multins dispatch rx counter doubled [#10074](https://github.com/deepflowio/deepflow/pull/10074) by [rvql](https://github.com/rvql)
+* fix: agent upgradee failed [#10067](https://github.com/deepflowio/deepflow/pull/10067) by [askyrie](https://github.com/askyrie)
+* fix: missing pod info in process deletion event [#10064](https://github.com/deepflowio/deepflow/pull/10064) by [ZhengYa-0110](https://github.com/ZhengYa-0110)
+* fix: querier remove auto ip tag [#10062](https://github.com/deepflowio/deepflow/pull/10062) by [xiaochaoren1](https://github.com/xiaochaoren1)
 * fix: agnet - eBPF Fix the kernel kick on CPU0 was not triggered [#8817](https://github.com/deepflowio/deepflow/pull/8817) by [yinjiping](https://github.com/yinjiping)
 * fix: agent - eBPF Fix Crashes Caused by Packet Count Statistics [#8816](https://github.com/deepflowio/deepflow/pull/8816) by [yinjiping](https://github.com/yinjiping)
 * fix: wan type cidr may not be tagged [#8814](https://github.com/deepflowio/deepflow/pull/8814) by [lzf575](https://github.com/lzf575)
@@ -276,6 +281,8 @@
 * Fix prometheus data cannot be labeled with universal tags，if slow-decoder is used. [#7100](https://github.com/deepflowio/deepflow/pull/7100)
 
 #### NEW FEATURE
+* feat: querier modify event_type displayname [#10068](https://github.com/deepflowio/deepflow/pull/10068) by [xiaochaoren1](https://github.com/xiaochaoren1)
+* feat: resource events first get gprocess info from podId [#10065](https://github.com/deepflowio/deepflow/pull/10065) by [lzf575](https://github.com/lzf575)
 * feat: agent - eBPF Add a Musl flag option (#9022) [#9024](https://github.com/deepflowio/deepflow/pull/9024) by [yinjiping](https://github.com/yinjiping)
 * feat: updatae tunnel decap feature [#9021](https://github.com/deepflowio/deepflow/pull/9021) by [yuanchaoa](https://github.com/yuanchaoa)
 * feat: agent - eBPF Adaptation for TLinux 4.14.105-19-0019 [#9013](https://github.com/deepflowio/deepflow/pull/9013) by [yinjiping](https://github.com/yinjiping)
