@@ -8,6 +8,9 @@
 ### <a id="main"></a>DeepFlow release main
 
 #### Bug Fix
+* fix: flush l7 throttle when timeout [#10171](https://github.com/deepflowio/deepflow/pull/10171) by [lzf575](https://github.com/lzf575)
+* fix: SofaRPC response status [#10168](https://github.com/deepflowio/deepflow/pull/10168) by [rvql](https://github.com/rvql)
+* fix: querier remove outer auto ip group [#10137](https://github.com/deepflowio/deepflow/pull/10137) by [xiaochaoren1](https://github.com/xiaochaoren1)
 * fix: agnet - eBPF Fix the kernel kick on CPU0 was not triggered [#8817](https://github.com/deepflowio/deepflow/pull/8817) by [yinjiping](https://github.com/yinjiping)
 * fix: agent - eBPF Fix Crashes Caused by Packet Count Statistics [#8816](https://github.com/deepflowio/deepflow/pull/8816) by [yinjiping](https://github.com/yinjiping)
 * fix: wan type cidr may not be tagged [#8814](https://github.com/deepflowio/deepflow/pull/8814) by [lzf575](https://github.com/lzf575)
