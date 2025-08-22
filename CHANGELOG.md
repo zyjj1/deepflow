@@ -276,6 +276,8 @@
 * Fix prometheus data cannot be labeled with universal tags，if slow-decoder is used. [#7100](https://github.com/deepflowio/deepflow/pull/7100)
 
 #### NEW FEATURE
+* feature: supprot configuration vtap group name [#10337](https://github.com/deepflowio/deepflow/pull/10337) by [askyrie](https://github.com/askyrie)
+* feat: redis add pcap database [#10319](https://github.com/deepflowio/deepflow/pull/10319) by [xiaochaoren1](https://github.com/xiaochaoren1)
 * feat: agent - eBPF Add a Musl flag option (#9022) [#9024](https://github.com/deepflowio/deepflow/pull/9024) by [yinjiping](https://github.com/yinjiping)
 * feat: updatae tunnel decap feature [#9021](https://github.com/deepflowio/deepflow/pull/9021) by [yuanchaoa](https://github.com/yuanchaoa)
 * feat: agent - eBPF Adaptation for TLinux 4.14.105-19-0019 [#9013](https://github.com/deepflowio/deepflow/pull/9013) by [yinjiping](https://github.com/yinjiping)
