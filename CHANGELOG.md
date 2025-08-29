@@ -276,6 +276,9 @@
 * Fix prometheus data cannot be labeled with universal tags，if slow-decoder is used. [#7100](https://github.com/deepflowio/deepflow/pull/7100)
 
 #### NEW FEATURE
+* feat: add profile in_process metrics table [#10361](https://github.com/deepflowio/deepflow/pull/10361) by [lzf575](https://github.com/lzf575)
+* feat: improves agent config api performance [#10356](https://github.com/deepflowio/deepflow/pull/10356) by [ZhengYa-0110](https://github.com/ZhengYa-0110)
+* feat: add file type field to IO event [#10355](https://github.com/deepflowio/deepflow/pull/10355) by [lzf575](https://github.com/lzf575)
 * feat: agent - eBPF Add a Musl flag option (#9022) [#9024](https://github.com/deepflowio/deepflow/pull/9024) by [yinjiping](https://github.com/yinjiping)
 * feat: updatae tunnel decap feature [#9021](https://github.com/deepflowio/deepflow/pull/9021) by [yuanchaoa](https://github.com/yuanchaoa)
 * feat: agent - eBPF Adaptation for TLinux 4.14.105-19-0019 [#9013](https://github.com/deepflowio/deepflow/pull/9013) by [yinjiping](https://github.com/yinjiping)
