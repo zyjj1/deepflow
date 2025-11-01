@@ -276,6 +276,10 @@
 * Fix prometheus data cannot be labeled with universal tags，if slow-decoder is used. [#7100](https://github.com/deepflowio/deepflow/pull/7100)
 
 #### NEW FEATURE
+* feat: modify npb_policy and acl name len [#10712](https://github.com/deepflowio/deepflow/pull/10712) by [SongZhen0704](https://github.com/SongZhen0704)
+* feat: tagrecorder custom service renaming [#10704](https://github.com/deepflowio/deepflow/pull/10704) by [xiaochaoren1](https://github.com/xiaochaoren1)
+* feat: Optimal Configuration [#10700](https://github.com/deepflowio/deepflow/pull/10700) by [yuanchaoa](https://github.com/yuanchaoa)
+* feat: l7 flow log add column is_async [#10657](https://github.com/deepflowio/deepflow/pull/10657) by [lzf575](https://github.com/lzf575)
 * feat: agent - eBPF Add a Musl flag option (#9022) [#9024](https://github.com/deepflowio/deepflow/pull/9024) by [yinjiping](https://github.com/yinjiping)
 * feat: updatae tunnel decap feature [#9021](https://github.com/deepflowio/deepflow/pull/9021) by [yuanchaoa](https://github.com/yuanchaoa)
 * feat: agent - eBPF Adaptation for TLinux 4.14.105-19-0019 [#9013](https://github.com/deepflowio/deepflow/pull/9013) by [yinjiping](https://github.com/yinjiping)
