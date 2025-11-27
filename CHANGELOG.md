@@ -8,6 +8,9 @@
 ### <a id="main"></a>DeepFlow release main
 
 #### Bug Fix
+* fix: add flow_map apis for topo [#10902](https://github.com/deepflowio/deepflow/pull/10902) by [taloric](https://github.com/taloric)
+* fix: inputs.proc.enabled is not taking effect [#10901](https://github.com/deepflowio/deepflow/pull/10901) by [yuanchaoa](https://github.com/yuanchaoa)
+* fix: config_map db migration bug [#10900](https://github.com/deepflowio/deepflow/pull/10900) by [ZhengYa-0110](https://github.com/ZhengYa-0110)
 * fix: agnet - eBPF Fix the kernel kick on CPU0 was not triggered [#8817](https://github.com/deepflowio/deepflow/pull/8817) by [yinjiping](https://github.com/yinjiping)
 * fix: agent - eBPF Fix Crashes Caused by Packet Count Statistics [#8816](https://github.com/deepflowio/deepflow/pull/8816) by [yinjiping](https://github.com/yinjiping)
 * fix: wan type cidr may not be tagged [#8814](https://github.com/deepflowio/deepflow/pull/8814) by [lzf575](https://github.com/lzf575)
@@ -276,6 +279,8 @@
 * Fix prometheus data cannot be labeled with universal tags，if slow-decoder is used. [#7100](https://github.com/deepflowio/deepflow/pull/7100)
 
 #### NEW FEATURE
+* feat: alarm policy supports custom biz service [#10907](https://github.com/deepflowio/deepflow/pull/10907) by [xiaochaoren1](https://github.com/xiaochaoren1)
+* feat: tagrecorder supports custom biz service [#10844](https://github.com/deepflowio/deepflow/pull/10844) by [xiaochaoren1](https://github.com/xiaochaoren1)
 * feat: agent - eBPF Add a Musl flag option (#9022) [#9024](https://github.com/deepflowio/deepflow/pull/9024) by [yinjiping](https://github.com/yinjiping)
 * feat: updatae tunnel decap feature [#9021](https://github.com/deepflowio/deepflow/pull/9021) by [yuanchaoa](https://github.com/yuanchaoa)
 * feat: agent - eBPF Adaptation for TLinux 4.14.105-19-0019 [#9013](https://github.com/deepflowio/deepflow/pull/9013) by [yinjiping](https://github.com/yinjiping)
