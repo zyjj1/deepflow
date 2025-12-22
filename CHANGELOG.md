@@ -8,6 +8,8 @@
 ### <a id="main"></a>DeepFlow release main
 
 #### Bug Fix
+* fix: Fix too much log in platform sync and upgrade stuck in failure [#11081](https://github.com/deepflowio/deepflow/pull/11081) by [rvql](https://github.com/rvql)
+* fix: eBPF resolve failure to load Lua profile on Linux kernel 5.4 [#10968](https://github.com/deepflowio/deepflow/pull/10968) by [qlndzt](https://github.com/qlndzt)
 * fix: agnet - eBPF Fix the kernel kick on CPU0 was not triggered [#8817](https://github.com/deepflowio/deepflow/pull/8817) by [yinjiping](https://github.com/yinjiping)
 * fix: agent - eBPF Fix Crashes Caused by Packet Count Statistics [#8816](https://github.com/deepflowio/deepflow/pull/8816) by [yinjiping](https://github.com/yinjiping)
 * fix: wan type cidr may not be tagged [#8814](https://github.com/deepflowio/deepflow/pull/8814) by [lzf575](https://github.com/lzf575)
@@ -276,6 +278,10 @@
 * Fix prometheus data cannot be labeled with universal tags，if slow-decoder is used. [#7100](https://github.com/deepflowio/deepflow/pull/7100)
 
 #### NEW FEATURE
+* feat: polish recorder db operator log [#11076](https://github.com/deepflowio/deepflow/pull/11076) by [ZhengYa-0110](https://github.com/ZhengYa-0110)
+* feat: polish cen orm field process [#11073](https://github.com/deepflowio/deepflow/pull/11073) by [ZhengYa-0110](https://github.com/ZhengYa-0110)
+* feat: eBPF Suppress logs for exited processes [#11072](https://github.com/deepflowio/deepflow/pull/11072) by [yinjiping](https://github.com/yinjiping)
+* feat: tagrecorder add policy_info [#11037](https://github.com/deepflowio/deepflow/pull/11037) by [xiaochaoren1](https://github.com/xiaochaoren1)
 * feat: agent - eBPF Add a Musl flag option (#9022) [#9024](https://github.com/deepflowio/deepflow/pull/9024) by [yinjiping](https://github.com/yinjiping)
 * feat: updatae tunnel decap feature [#9021](https://github.com/deepflowio/deepflow/pull/9021) by [yuanchaoa](https://github.com/yuanchaoa)
 * feat: agent - eBPF Adaptation for TLinux 4.14.105-19-0019 [#9013](https://github.com/deepflowio/deepflow/pull/9013) by [yinjiping](https://github.com/yinjiping)
