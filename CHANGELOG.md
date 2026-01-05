@@ -8,6 +8,7 @@
 ### <a id="main"></a>DeepFlow release main
 
 #### Bug Fix
+* fix: 修复了agent失联后很快被删除的问题 [#11092](https://github.com/deepflowio/deepflow/pull/11092) by [cangkutou](https://github.com/cangkutou)
 * fix: agnet - eBPF Fix the kernel kick on CPU0 was not triggered [#8817](https://github.com/deepflowio/deepflow/pull/8817) by [yinjiping](https://github.com/yinjiping)
 * fix: agent - eBPF Fix Crashes Caused by Packet Count Statistics [#8816](https://github.com/deepflowio/deepflow/pull/8816) by [yinjiping](https://github.com/yinjiping)
 * fix: wan type cidr may not be tagged [#8814](https://github.com/deepflowio/deepflow/pull/8814) by [lzf575](https://github.com/lzf575)
@@ -276,6 +277,11 @@
 * Fix prometheus data cannot be labeled with universal tags，if slow-decoder is used. [#7100](https://github.com/deepflowio/deepflow/pull/7100)
 
 #### NEW FEATURE
+* feat: get endpoint/request_type from wasm response data [#11190](https://github.com/deepflowio/deepflow/pull/11190) by [lzf575](https://github.com/lzf575)
+* feat: support triple [#11189](https://github.com/deepflowio/deepflow/pull/11189) by [yuanchaoa](https://github.com/yuanchaoa)
+* feat: add biz decode dict/policy orm [#11184](https://github.com/deepflowio/deepflow/pull/11184) by [ZhengYa-0110](https://github.com/ZhengYa-0110)
+* feat: biz policy/dictionary ddl [#11183](https://github.com/deepflowio/deepflow/pull/11183) by [ZhengYa-0110](https://github.com/ZhengYa-0110)
+* feat: retry genesis dest cache [#11156](https://github.com/deepflowio/deepflow/pull/11156) by [askyrie](https://github.com/askyrie)
 * feat: agent - eBPF Add a Musl flag option (#9022) [#9024](https://github.com/deepflowio/deepflow/pull/9024) by [yinjiping](https://github.com/yinjiping)
 * feat: updatae tunnel decap feature [#9021](https://github.com/deepflowio/deepflow/pull/9021) by [yuanchaoa](https://github.com/yuanchaoa)
 * feat: agent - eBPF Adaptation for TLinux 4.14.105-19-0019 [#9013](https://github.com/deepflowio/deepflow/pull/9013) by [yinjiping](https://github.com/yinjiping)
@@ -604,10 +610,13 @@
 * docs: rename opentemetry to opentelemetry [#7245](https://github.com/deepflowio/deepflow/pull/7245) by [lzf575](https://github.com/lzf575)
 
 #### Chore
+* chore: delete unused code [#11192](https://github.com/deepflowio/deepflow/pull/11192) by [lzf575](https://github.com/lzf575)
 * chore: Improve rebuild speed by eliminating unnecessary rerun of build.rs [#8207](https://github.com/deepflowio/deepflow/pull/8207) by [rvql](https://github.com/rvql)
 * chore: update cli dependencies [#7249](https://github.com/deepflowio/deepflow/pull/7249) by [lzf575](https://github.com/lzf575)
 
 #### OTHER
+* 更新开源 demo 密码 [#11188](https://github.com/deepflowio/deepflow/pull/11188) by [1473371932](https://github.com/1473371932)
+* 更新开源 demo 密码 [#11187](https://github.com/deepflowio/deepflow/pull/11187) by [1473371932](https://github.com/1473371932)
 * add ci to clear stale branch [#8149](https://github.com/deepflowio/deepflow/pull/8149) by [jiumos](https://github.com/jiumos)
 * failed to create tables in ByConity database under non-default organization [#8148](https://github.com/deepflowio/deepflow/pull/8148) by [lzf575](https://github.com/lzf575)
 * Update typo in comments [#8127](https://github.com/deepflowio/deepflow/pull/8127) by [Hyzhou](https://github.com/Hyzhou)
