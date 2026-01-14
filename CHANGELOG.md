@@ -8,6 +8,8 @@
 ### <a id="main"></a>DeepFlow release main
 
 #### Bug Fix
+* fix: Avoid recompiling ebpf [#11233](https://github.com/deepflowio/deepflow/pull/11233) by [rvql](https://github.com/rvql)
+* fix: diff custom app config cache [#11225](https://github.com/deepflowio/deepflow/pull/11225) by [askyrie](https://github.com/askyrie)
 * fix: agnet - eBPF Fix the kernel kick on CPU0 was not triggered [#8817](https://github.com/deepflowio/deepflow/pull/8817) by [yinjiping](https://github.com/yinjiping)
 * fix: agent - eBPF Fix Crashes Caused by Packet Count Statistics [#8816](https://github.com/deepflowio/deepflow/pull/8816) by [yinjiping](https://github.com/yinjiping)
 * fix: wan type cidr may not be tagged [#8814](https://github.com/deepflowio/deepflow/pull/8814) by [lzf575](https://github.com/lzf575)
@@ -276,6 +278,10 @@
 * Fix prometheus data cannot be labeled with universal tags，if slow-decoder is used. [#7100](https://github.com/deepflowio/deepflow/pull/7100)
 
 #### NEW FEATURE
+* feat: agent eBPF ignore deepflow_ebpfctl_bin.c [#11227](https://github.com/deepflowio/deepflow/pull/11227) by [yinjiping](https://github.com/yinjiping)
+* feat: add biz decode spec [#11220](https://github.com/deepflowio/deepflow/pull/11220) by [ZhengYa-0110](https://github.com/ZhengYa-0110)
+* feat: controller add pcap repo config [#11208](https://github.com/deepflowio/deepflow/pull/11208) by [xiaochaoren1](https://github.com/xiaochaoren1)
+* feat: Change configuration of custom application policies [#11207](https://github.com/deepflowio/deepflow/pull/11207) by [rvql](https://github.com/rvql)
 * feat: agent - eBPF Add a Musl flag option (#9022) [#9024](https://github.com/deepflowio/deepflow/pull/9024) by [yinjiping](https://github.com/yinjiping)
 * feat: updatae tunnel decap feature [#9021](https://github.com/deepflowio/deepflow/pull/9021) by [yuanchaoa](https://github.com/yuanchaoa)
 * feat: agent - eBPF Adaptation for TLinux 4.14.105-19-0019 [#9013](https://github.com/deepflowio/deepflow/pull/9013) by [yinjiping](https://github.com/yinjiping)
@@ -604,6 +610,7 @@
 * docs: rename opentemetry to opentelemetry [#7245](https://github.com/deepflowio/deepflow/pull/7245) by [lzf575](https://github.com/lzf575)
 
 #### Chore
+* chore: modify the Chinese translation of "response" [#11231](https://github.com/deepflowio/deepflow/pull/11231) by [lzf575](https://github.com/lzf575)
 * chore: Improve rebuild speed by eliminating unnecessary rerun of build.rs [#8207](https://github.com/deepflowio/deepflow/pull/8207) by [rvql](https://github.com/rvql)
 * chore: update cli dependencies [#7249](https://github.com/deepflowio/deepflow/pull/7249) by [lzf575](https://github.com/lzf575)
 
