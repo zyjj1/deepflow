@@ -8,6 +8,9 @@
 ### <a id="main"></a>DeepFlow release main
 
 #### Bug Fix
+* fix: invalid enum options [#11284](https://github.com/deepflowio/deepflow/pull/11284) by [yuanchaoa](https://github.com/yuanchaoa)
+* fix: when use extra_filters for query, always query native tag [#11281](https://github.com/deepflowio/deepflow/pull/11281) by [taloric](https://github.com/taloric)
+* fix: correct v8 unwind and symbolization in arm [#11267](https://github.com/deepflowio/deepflow/pull/11267) by [kylewanginchina](https://github.com/kylewanginchina)
 * fix: agnet - eBPF Fix the kernel kick on CPU0 was not triggered [#8817](https://github.com/deepflowio/deepflow/pull/8817) by [yinjiping](https://github.com/yinjiping)
 * fix: agent - eBPF Fix Crashes Caused by Packet Count Statistics [#8816](https://github.com/deepflowio/deepflow/pull/8816) by [yinjiping](https://github.com/yinjiping)
 * fix: wan type cidr may not be tagged [#8814](https://github.com/deepflowio/deepflow/pull/8814) by [lzf575](https://github.com/lzf575)
@@ -276,6 +279,8 @@
 * Fix prometheus data cannot be labeled with universal tags，if slow-decoder is used. [#7100](https://github.com/deepflowio/deepflow/pull/7100)
 
 #### NEW FEATURE
+* feat: pgsql support msg type 'E' [#11288](https://github.com/deepflowio/deepflow/pull/11288) by [yuanchaoa](https://github.com/yuanchaoa)
+* feat: add column in custom_service table [#11283](https://github.com/deepflowio/deepflow/pull/11283) by [ZhengYa-0110](https://github.com/ZhengYa-0110)
 * feat: agent - eBPF Add a Musl flag option (#9022) [#9024](https://github.com/deepflowio/deepflow/pull/9024) by [yinjiping](https://github.com/yinjiping)
 * feat: updatae tunnel decap feature [#9021](https://github.com/deepflowio/deepflow/pull/9021) by [yuanchaoa](https://github.com/yuanchaoa)
 * feat: agent - eBPF Adaptation for TLinux 4.14.105-19-0019 [#9013](https://github.com/deepflowio/deepflow/pull/9013) by [yinjiping](https://github.com/yinjiping)
