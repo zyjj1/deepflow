@@ -8,6 +8,9 @@
 ### <a id="main"></a>DeepFlow release main
 
 #### Bug Fix
+* fix: windows/android querier keeps appending raw ip addr [#11318](https://github.com/deepflowio/deepflow/pull/11318) by [rvql](https://github.com/rvql)
+* fix: make merge_php_stacks compatible for some special cases [#11310](https://github.com/deepflowio/deepflow/pull/11310) by [kylewanginchina](https://github.com/kylewanginchina)
+* fix: make merge_v8_stacks compatible for some special cases [#11290](https://github.com/deepflowio/deepflow/pull/11290) by [kylewanginchina](https://github.com/kylewanginchina)
 * fix: agnet - eBPF Fix the kernel kick on CPU0 was not triggered [#8817](https://github.com/deepflowio/deepflow/pull/8817) by [yinjiping](https://github.com/yinjiping)
 * fix: agent - eBPF Fix Crashes Caused by Packet Count Statistics [#8816](https://github.com/deepflowio/deepflow/pull/8816) by [yinjiping](https://github.com/yinjiping)
 * fix: wan type cidr may not be tagged [#8814](https://github.com/deepflowio/deepflow/pull/8814) by [lzf575](https://github.com/lzf575)
@@ -276,6 +279,11 @@
 * Fix prometheus data cannot be labeled with universal tags，if slow-decoder is used. [#7100](https://github.com/deepflowio/deepflow/pull/7100)
 
 #### NEW FEATURE
+* feat: app log support string metrics [#11320](https://github.com/deepflowio/deepflow/pull/11320) by [lzf575](https://github.com/lzf575)
+* feat: modify pgsql algo logic [#11316](https://github.com/deepflowio/deepflow/pull/11316) by [yuanchaoa](https://github.com/yuanchaoa)
+* feat: add observation_point for tracetree [#11314](https://github.com/deepflowio/deepflow/pull/11314) by [taloric](https://github.com/taloric)
+* feat: add biz_response_code [#11307](https://github.com/deepflowio/deepflow/pull/11307) by [lzf575](https://github.com/lzf575)
+* feat: support off-cpu profile for php and nodejs/v8 [#11287](https://github.com/deepflowio/deepflow/pull/11287) by [kylewanginchina](https://github.com/kylewanginchina)
 * feat: agent - eBPF Add a Musl flag option (#9022) [#9024](https://github.com/deepflowio/deepflow/pull/9024) by [yinjiping](https://github.com/yinjiping)
 * feat: updatae tunnel decap feature [#9021](https://github.com/deepflowio/deepflow/pull/9021) by [yuanchaoa](https://github.com/yuanchaoa)
 * feat: agent - eBPF Adaptation for TLinux 4.14.105-19-0019 [#9013](https://github.com/deepflowio/deepflow/pull/9013) by [yinjiping](https://github.com/yinjiping)
@@ -548,6 +556,7 @@
 * feat: server directly reports metrics of load1_by_cpu_num that can be used for alert [#7088](https://github.com/deepflowio/deepflow/pull/7088) by [lzf575](https://github.com/lzf575)
 
 #### Refactoring
+* refactor: migrate python/lua/php/nodejs unwind code into ee [#11179](https://github.com/deepflowio/deepflow/pull/11179) by [kylewanginchina](https://github.com/kylewanginchina)
 * refactor: add logs [#8787](https://github.com/deepflowio/deepflow/pull/8787) by [yuanchaoa](https://github.com/yuanchaoa)
 * refactor: Remove legacy agent config [#8586](https://github.com/deepflowio/deepflow/pull/8586) by [rvql](https://github.com/rvql)
 * refactor: modify log of configuration changes [#8258](https://github.com/deepflowio/deepflow/pull/8258) by [yuanchaoa](https://github.com/yuanchaoa)
@@ -604,6 +613,7 @@
 * docs: rename opentemetry to opentelemetry [#7245](https://github.com/deepflowio/deepflow/pull/7245) by [lzf575](https://github.com/lzf575)
 
 #### Chore
+* chore: default value of parse xml set to true [#11313](https://github.com/deepflowio/deepflow/pull/11313) by [lzf575](https://github.com/lzf575)
 * chore: Improve rebuild speed by eliminating unnecessary rerun of build.rs [#8207](https://github.com/deepflowio/deepflow/pull/8207) by [rvql](https://github.com/rvql)
 * chore: update cli dependencies [#7249](https://github.com/deepflowio/deepflow/pull/7249) by [lzf575](https://github.com/lzf575)
 
