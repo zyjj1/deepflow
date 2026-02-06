@@ -8,6 +8,8 @@
 ### <a id="main"></a>DeepFlow release main
 
 #### Bug Fix
+* fix: if service not matched by pod, skip VPC IP matching [#11369](https://github.com/deepflowio/deepflow/pull/11369) by [lzf575](https://github.com/lzf575)
+* fix: eBPF Fix eBPF load failure on Linux 4.14 kernel [#11366](https://github.com/deepflowio/deepflow/pull/11366) by [yinjiping](https://github.com/yinjiping)
 * fix: agnet - eBPF Fix the kernel kick on CPU0 was not triggered [#8817](https://github.com/deepflowio/deepflow/pull/8817) by [yinjiping](https://github.com/yinjiping)
 * fix: agent - eBPF Fix Crashes Caused by Packet Count Statistics [#8816](https://github.com/deepflowio/deepflow/pull/8816) by [yinjiping](https://github.com/yinjiping)
 * fix: wan type cidr may not be tagged [#8814](https://github.com/deepflowio/deepflow/pull/8814) by [lzf575](https://github.com/lzf575)
