@@ -8,6 +8,9 @@
 ### <a id="main"></a>DeepFlow release main
 
 #### Bug Fix
+* fix: agent_group_config list command error [#11412](https://github.com/deepflowio/deepflow/pull/11412) by [SongZhen0704](https://github.com/SongZhen0704)
+* fix: querier chost_ip filter error [#11409](https://github.com/deepflowio/deepflow/pull/11409) by [xiaochaoren1](https://github.com/xiaochaoren1)
+* fix: handle extra_filters with correct seq [#11408](https://github.com/deepflowio/deepflow/pull/11408) by [taloric](https://github.com/taloric)
 * fix: agnet - eBPF Fix the kernel kick on CPU0 was not triggered [#8817](https://github.com/deepflowio/deepflow/pull/8817) by [yinjiping](https://github.com/yinjiping)
 * fix: agent - eBPF Fix Crashes Caused by Packet Count Statistics [#8816](https://github.com/deepflowio/deepflow/pull/8816) by [yinjiping](https://github.com/yinjiping)
 * fix: wan type cidr may not be tagged [#8814](https://github.com/deepflowio/deepflow/pull/8814) by [lzf575](https://github.com/lzf575)
