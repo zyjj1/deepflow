@@ -8,6 +8,11 @@
 ### <a id="main"></a>DeepFlow release main
 
 #### Bug Fix
+* Fix dubbo heart msg [#11499](https://github.com/deepflowio/deepflow/pull/11499) by [yuanchaoa](https://github.com/yuanchaoa)
+* fix: rng errors [#11498](https://github.com/deepflowio/deepflow/pull/11498) by [yuanchaoa](https://github.com/yuanchaoa)
+* fix: missing vinterface [#11496](https://github.com/deepflowio/deepflow/pull/11496) by [askyrie](https://github.com/askyrie)
+* fix: validate xdp_queue_size in NIC apply path [#11494](https://github.com/deepflowio/deepflow/pull/11494) by [yinjiping](https://github.com/yinjiping)
+* fix: fix lua unwind in some cases [#11399](https://github.com/deepflowio/deepflow/pull/11399) by [qlndzt](https://github.com/qlndzt)
 * fix: agnet - eBPF Fix the kernel kick on CPU0 was not triggered [#8817](https://github.com/deepflowio/deepflow/pull/8817) by [yinjiping](https://github.com/yinjiping)
 * fix: agent - eBPF Fix Crashes Caused by Packet Count Statistics [#8816](https://github.com/deepflowio/deepflow/pull/8816) by [yinjiping](https://github.com/yinjiping)
 * fix: wan type cidr may not be tagged [#8814](https://github.com/deepflowio/deepflow/pull/8814) by [lzf575](https://github.com/lzf575)
@@ -276,6 +281,7 @@
 * Fix prometheus data cannot be labeled with universal tags，if slow-decoder is used. [#7100](https://github.com/deepflowio/deepflow/pull/7100)
 
 #### NEW FEATURE
+* feat: Add Java classpath process matcher [#11497](https://github.com/deepflowio/deepflow/pull/11497) by [rvql](https://github.com/rvql)
 * feat: agent - eBPF Add a Musl flag option (#9022) [#9024](https://github.com/deepflowio/deepflow/pull/9024) by [yinjiping](https://github.com/yinjiping)
 * feat: updatae tunnel decap feature [#9021](https://github.com/deepflowio/deepflow/pull/9021) by [yuanchaoa](https://github.com/yuanchaoa)
 * feat: agent - eBPF Adaptation for TLinux 4.14.105-19-0019 [#9013](https://github.com/deepflowio/deepflow/pull/9013) by [yinjiping](https://github.com/yinjiping)
